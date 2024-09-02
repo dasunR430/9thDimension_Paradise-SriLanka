@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>188568190835-dq0r583b3ud7g4smiv3hrpauuigegtrc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.188568190835-dq0r583b3ud7g4smiv3hrpauuigegtrc</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBE5cYuJF1gjRl-WR0GAexz1QDmpr1W9jQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>188568190835</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.paradiseSriLanka</string>
+	<key>PROJECT_ID</key>
+	<string>paradise-srilanka</string>
+	<key>STORAGE_BUCKET</key>
+	<string>paradise-srilanka.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:188568190835:ios:ea440a398ba40478700f06</string>
+</dict>
+</plist>
