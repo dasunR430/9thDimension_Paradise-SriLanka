@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:paradise_sri_lanka/Utils/helpers/helper_functions.dart';
+import 'package:tuple/tuple.dart';
+
 
 class CustomDropdownField extends StatelessWidget {
   final String questionText;
   final String labelText;
-  final List<String> items;
+  final List<Tuple2<String, String>> items;
   final ValueChanged<String?>? onChanged;
   final TextEditingController? controller;
   final bool isRequired;
@@ -42,13 +45,13 @@ class CustomDropdownField extends StatelessWidget {
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            labelText: labelText,
+            labelText: items.firstWhere((item) => item.item1 == controller?.text, orElse: () => const Tuple2('', 'Option')).item2,
             border: const OutlineInputBorder(),
           ),
-          items: items.map((String item) {
+          items: items.map((Tuple2<String, String> pair) {
             return DropdownMenuItem<String>(
-              value: item,
-              child: Text(item),
+              value: pair.item1,
+              child: SizedBox(width: HelperFunctions.screenWidth()-90, child: Text(pair.item2, maxLines: 3, style: const TextStyle(overflow: TextOverflow.ellipsis, ))),
             );
           }).toList(),
           onChanged: (String? value) {

@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_date_picker.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_dropdown_field.dart';
+import 'package:tuple/tuple.dart';
 import '../../../Models/travelled_country.dart';
 
 class TravelledCountryCard extends StatelessWidget {
@@ -39,7 +40,7 @@ class TravelledCountryCard extends StatelessWidget {
             CustomDropdownField(
               questionText: 'What is the country you visited?',
               labelText: 'Country',
-              items: const ['USA', 'UK', 'Canada'],
+              items: const ['USA', 'UK', 'Canada'].map((element) => Tuple2(element, element)).toList(),
               onChanged: (String? newValue) {
                 // Handle country selection
               },
@@ -59,7 +60,7 @@ class TravelledCountryCard extends StatelessWidget {
             CustomDropdownField(
               questionText: 'Purpose of visit',
               labelText: 'Select',
-              items: const ['Tourism', 'Business', 'Other'],
+              items: const ['Tourism', 'Business', 'Other'].map((element) => Tuple2(element, element)).toList(),
               onChanged: (String? newValue) {
                 // Handle purpose selection
               },

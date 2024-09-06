@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tuple/tuple.dart';
 import '../../Controllers/visa_type_selection_controller.dart';
 import 'Widgets/question_page.dart';
 
@@ -12,7 +13,7 @@ class VisaTypeSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text(controller.titles[controller.currentPage.value], style: TextStyle(fontWeight: FontWeight.bold))),
+        title: Obx(() => Text(controller.titles[controller.currentPage.value], style: const TextStyle(fontWeight: FontWeight.bold))),
       ),
       body: Column(
         children: [
@@ -24,6 +25,7 @@ class VisaTypeSelection extends StatelessWidget {
           Expanded(
             child: PageView(
               controller: controller.pageController,
+              physics: const NeverScrollableScrollPhysics(),
               onPageChanged: controller.onPageChange,
               children: [
 
@@ -40,7 +42,7 @@ class VisaTypeSelection extends StatelessWidget {
 
                 QuestionPage(
                   title: "What is the primary purpose of your visit?",
-                  dropdownItems: const ['Tourism', 'Business', 'Education', 'Medical', 'Other'],
+                  dropdownItems: controller.purposes.map((purpose) => Tuple2(purpose, purpose)).toList(),
                   showBack: true,
                   onNext: controller.nextPage,
                   onBack: controller.previousPage,
@@ -50,7 +52,7 @@ class VisaTypeSelection extends StatelessWidget {
 
                 QuestionPage(
                   title: "Are you traveling as an individual or as part of a family/group?",
-                  dropdownItems: ['Individual', 'Family', 'Group'],
+                  dropdownItems: controller.entryTypes.map((element) => Tuple2(element, element)).toList(),
                   showBack: true,
                   onNext: controller.nextPage,
                   onBack: controller.previousPage,
@@ -60,7 +62,7 @@ class VisaTypeSelection extends StatelessWidget {
 
                 QuestionPage(
                   title: "Please choose the appropriate visa category for your visit",
-                  dropdownItems: ['Tourism', 'Business', 'Education', 'Medical', 'Other'],
+                  dropdownItems: controller.visaTypes.map((visaType) => Tuple2(visaType.visaId, visaType.title)).toList(),
                   showBack: true,
                   onNext: controller.nextPage,
                   onBack: controller.previousPage,
@@ -70,7 +72,7 @@ class VisaTypeSelection extends StatelessWidget {
 
                 QuestionPage(
                   title: "When do you plan to arrive in Sri Lanka?",
-                  dropdownItems: [], // Not used, but could be used for some other inputs
+                  dropdownItems: const [], // Not used, but could be used for some other inputs
                   showBack: true,
                   onNext: controller.nextPage,
                   onBack: controller.previousPage,

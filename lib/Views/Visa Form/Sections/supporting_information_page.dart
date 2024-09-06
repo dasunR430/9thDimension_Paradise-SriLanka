@@ -4,6 +4,7 @@ import 'package:paradise_sri_lanka/Common/Widgets/custom_dropdown_field.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
 import 'package:paradise_sri_lanka/Controllers/pdf_upload_controller.dart';
 import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart';
+import 'package:tuple/tuple.dart';
 import '../Widgets/pdf_upload_widget.dart';
 
 class SupportingDocumentsPage extends StatelessWidget {
@@ -48,7 +49,7 @@ class SupportingDocumentsPage extends StatelessWidget {
             CustomDropdownField(
               questionText: 'Have you visited Sri Lanka before?',
               labelText: 'Select',
-              items: const ['Yes', 'No'],
+              items: const ['Yes', 'No'].map((element) => Tuple2(element, element)).toList(),
               onChanged: (String? newValue) {
                 sectionController.hasVisitedBeforeController.text = newValue!;
               },

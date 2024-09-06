@@ -3,6 +3,7 @@ import 'package:country_picker/country_picker.dart'; // Import the country_picke
 import 'package:paradise_sri_lanka/Common/Widgets/custom_date_picker.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
 import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart';
+import 'package:tuple/tuple.dart';
 import '../../../Common/Widgets/custom_dropdown_field.dart';
 import '../../../Utils/helpers/helper_functions.dart';
 
@@ -102,7 +103,7 @@ class PersonalDetailsScreen extends StatelessWidget {
               isRequired: true,
               questionText: 'What is your Gender?',
               labelText: 'Gender',
-              items: const ['Male', 'Female', 'Other'],
+              items: const ['Male', 'Female', 'Other'].map((element)=> Tuple2(element, element)).toList(),
               controller: sectionController.genderController,
 
             ),
@@ -154,7 +155,7 @@ class PersonalDetailsScreen extends StatelessWidget {
             CustomDropdownField(
               questionText: 'What is your Martial Status?',
               labelText: 'Martial Status',
-              items: const ['Single', 'Married', 'Divorced'],
+              items: const ['Single', 'Married', 'Divorced'].map((element) => Tuple2(element, element)).toList(),
               controller: sectionController.genderController,
 
             ),

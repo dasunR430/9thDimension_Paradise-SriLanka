@@ -13,35 +13,76 @@ class BottomPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = HelperFunctions.isDarkMode(context);
     return DefaultTabController(
-      length: tabs.length,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        length: tabs.length,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           TabBar(
             tabs: tabs,
             isScrollable: true,
             indicatorColor: Colors.blueAccent,
-            labelColor: Colors.black,
+            labelColor: isDark ? Colors.white : Colors.black,
             tabAlignment: TabAlignment.start,
           ),
           Container(
-            color: Colors.red,
-            height: HelperFunctions.screenHeight()-DeviceUtils.getAppBarHeight()-DeviceUtils.getStatusBarHeight() -80,
-            child: TabBarView(children: [
-              Center(
-                child: Text("Details"),
-              ),
-              Center(
-                child: Text("Visited Places"),
-              ),
-              Center(
-                child: Text("My Collection"),
-              ),
-            ]),
-          ),
-        ],
-      ),
-    );
+            height: HelperFunctions.screenHeight() -
+                DeviceUtils.getAppBarHeight() -
+                DeviceUtils.getStatusBarHeight() -
+                80,
+            child: TabBarView(
+              children: [
+                SingleChildScrollView(
+                  child: Column(children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Text(
+                          "My Details",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        )),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.edit),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "First Name",
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                              Text(
+                                "John",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
+                ),
+                Center(),
+                Center()
+              ],
+            ),
+          )
+        ]));
   }
 }

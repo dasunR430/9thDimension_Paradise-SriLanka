@@ -98,7 +98,7 @@ class VisaApplicant {
       'instagramURL': instagramURL,
       'xURL': xURL,
       'linkedInURL': linkedInURL,
-      'travelHistory': travelHistory?.map((country) => country.toMap()).toList(),
+      'travelHistory': travelHistory?.map((travel) => travel.toMap()).toList(),
     };
   }
 
