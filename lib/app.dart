@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:paradise_sri_lanka/Views/Authentication/Login/login_screen.dart';
 import 'package:paradise_sri_lanka/Views/Visa%20Type%20Selection/visa_type_selection.dart';
+import 'package:paradise_sri_lanka/Views/Home/home_screen.dart';
+import 'package:paradise_sri_lanka/Views/Navigation/navigation_screen.dart';
 import 'package:provider/provider.dart';
 import 'Controllers/applicants_controller.dart';
 import 'Utils/constants/text_strings.dart';

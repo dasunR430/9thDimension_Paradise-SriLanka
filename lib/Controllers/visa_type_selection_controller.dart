@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Models/visaType.dart';
 import 'package:paradise_sri_lanka/Models/visa_applicant.dart';
+import 'package:paradise_sri_lanka/Services/API/database.dart';
 
 import '../Models/entity.dart';
 
@@ -9,6 +11,8 @@ class VisaTypeSelectionController extends GetxController {
   int _cPage = 0;
   var pages = 5;
   RxDouble progress = 0.0.obs;
+
+
 
   final TextEditingController countryIdController = TextEditingController();
   final TextEditingController travelTypeController = TextEditingController();
@@ -21,8 +25,6 @@ class VisaTypeSelectionController extends GetxController {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController zipController = TextEditingController();
 
-  List<VisaApplicant> applicants = [];
-  VisaApplicant? mainVisaApplicant;
 
   List<String> titles = [
     "Let's Start",
@@ -34,8 +36,27 @@ class VisaTypeSelectionController extends GetxController {
 
   final PageController pageController = PageController(initialPage: 0);
 
+  late List<VisaType> visaTypes;
+  List<String> purposes = [
+    'Sightseeing / Holidaying',
+    'Visiting friends and relatives',
+    'Medical treatment including Ayurvedic and Yoga',
+    'Participating in sports events, competitions, and activities relating to cultural performance',
+  ];
+
+  List<String> entryTypes = [
+    'Individual',
+    'Group',
+  ];
+
+  @override
+  void onInit() {
+    _getVisaTypes();
+    super.onInit();
+  }
+
   void nextPage() {
-    if (_cPage < pages) {
+    if (_cPage < pages-1) {
       if (_validatePage()) {
         _cPage++;
         pageController.animateToPage(_cPage,
@@ -48,20 +69,18 @@ class VisaTypeSelectionController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.redAccent,
           colorText: Colors.white,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         );
       }
     } else {
-      // Create ApplicantEntity object on the final page
+
       ApplicantEntity entity = ApplicantEntity(
-        applicants: applicants,
         countryId: countryIdController.text,
-        visaSubCategory: visaSubCategoryController.text,
-        arrivalDate: DateTime.parse(arrivalDateController.text)
+        visaTypeId: visaSubCategoryController.text,
+        startDate: DateTime.parse(arrivalDateController.text),
       );
 
-      // You can handle the created entity, e.g., save to database or send to API
-      print('Applicant Entity Created: ${entity.toMap()}');
+
     }
   }
 
@@ -100,5 +119,15 @@ class VisaTypeSelectionController extends GetxController {
       default:
         return true;
     }
+  }
+
+  void _getVisaTypes(){
+    ParadiseDataBase.visaTypes.then((value) {
+      if(value == null){
+        visaTypes = [];
+        return;
+      }
+      visaTypes = value;
+    });
   }
 }

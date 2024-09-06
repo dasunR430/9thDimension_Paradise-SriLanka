@@ -2,11 +2,12 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_date_picker.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
+import 'package:tuple/tuple.dart';
 import '../../../Common/Widgets/custom_dropdown_field.dart';
 
 class QuestionPage extends StatelessWidget {
   final String title;
-  final List<String> dropdownItems;
+  final List<Tuple2<String, String>> dropdownItems;
   final bool showBack;
   final VoidCallback onNext;
   final VoidCallback onBack;
@@ -31,7 +32,7 @@ class QuestionPage extends StatelessWidget {
   void _showCountryPicker(BuildContext context) {
     showCountryPicker(
       context: context,
-      favorite: <String>['SE'],
+      exclude: <String>['LK'],
       showPhoneCode: false,
       onSelect: (Country country) {
         textController.text = country.name;

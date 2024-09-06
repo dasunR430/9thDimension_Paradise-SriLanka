@@ -13,13 +13,11 @@ class TravelledCountry {
     this.attachment,
   });
 
-  // Creates an instance from a Map
   factory TravelledCountry.fromMap(Map<String, dynamic> map) {
     return TravelledCountry(
       country: map['country'] ?? '',
       entryDate: DateTime.parse(map['entryDate']),
       purpose: map['purpose'] ?? '',
-      // Handle attachment if needed
     );
   }
 
@@ -29,7 +27,6 @@ class TravelledCountry {
       'country': country,
       'entryDate': entryDate.toIso8601String(),
       'purpose': purpose,
-      // Handle attachment if needed
     };
   }
 }
