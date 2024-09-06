@@ -6,7 +6,9 @@ import 'package:paradise_sri_lanka/Services/API/database.dart';
 class ApplicantEntity {
   String? entityId;
   VisaApplicant? mainVisaApplicant;
+
   List<EntityMember>? entityMembers = [];
+
   String countryId;
   String visaTypeId;
   DateTime startDate;
@@ -35,7 +37,7 @@ class ApplicantEntity {
     return {
       'entityId': entityId,
       'mainVisaApplicant': mainVisaApplicant?.toMap(),
-      'applicants': entityMembers?.map((entityMember) => entityMember.toMap()).toList(),
+      'entityMembers': entityMembers?.map((entityMember) => entityMember.toMap()).toList(),
       'countryId': countryId,
       'visaId': visaTypeId,
       'startDate': startDate.toIso8601String(),

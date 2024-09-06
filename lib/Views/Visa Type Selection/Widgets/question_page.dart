@@ -34,8 +34,9 @@ class QuestionPage extends StatelessWidget {
       context: context,
       exclude: <String>['LK'],
       showPhoneCode: false,
+      exclude: ['LK'],
       onSelect: (Country country) {
-        textController.text = country.name;
+        textController.text = HelperFunctions.isoToPassportCode(country.countryCode);
       },
       moveAlongWithKeyboard: false,
       countryListTheme: CountryListThemeData(
