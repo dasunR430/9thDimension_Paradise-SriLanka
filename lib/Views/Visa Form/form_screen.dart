@@ -5,8 +5,10 @@ import 'Widgets/appbar.dart';
 import 'Widgets/bottompanel.dart';
 
 class FormScreen extends StatelessWidget {
-  FormScreen({super.key});
-  final VisaApplicationController controller = Get.put(VisaApplicationController());
+  FormScreen(isMainApplicant, {super.key}){
+    controller = Get.put(VisaApplicationController(isMainApplicant));
+  }
+  late final VisaApplicationController controller;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

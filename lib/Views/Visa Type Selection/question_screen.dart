@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Controllers/question_screen_controller.dart';
 import 'package:tuple/tuple.dart';
-import '../../Controllers/visa_type_selection_controller.dart';
+
 import 'Widgets/question_page.dart';
 
-class VisaTypeSelection extends StatelessWidget {
-  VisaTypeSelection({super.key});
+class QuestionScreen extends StatelessWidget {
+  QuestionScreen({super.key});
 
-  final VisaTypeSelectionController controller = Get.put(VisaTypeSelectionController());
+  final QuestionScreenController controller = Get.put(QuestionScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class VisaTypeSelection extends StatelessWidget {
                   onNext: controller.nextPage,
                   onBack: controller.previousPage,
                   isDropdown: true,
-                  textController: controller.visaSubCategoryController,
+                  textController: controller.visaTypeController,
                 ),
 
                 QuestionPage(

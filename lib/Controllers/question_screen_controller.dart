@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paradise_sri_lanka/Models/visaType.dart';
-import 'package:paradise_sri_lanka/Models/visa_applicant.dart';
 import 'package:paradise_sri_lanka/Services/API/database.dart';
+import 'package:paradise_sri_lanka/Views/Applicants%20Screen/applicants_screen.dart';
 
 import '../Models/entity.dart';
 
-class VisaTypeSelectionController extends GetxController {
+class QuestionScreenController extends GetxController {
   RxInt currentPage = 0.obs;
   int _cPage = 0;
   var pages = 5;
@@ -17,7 +17,7 @@ class VisaTypeSelectionController extends GetxController {
   final TextEditingController countryIdController = TextEditingController();
   final TextEditingController travelTypeController = TextEditingController();
   final TextEditingController purposeController = TextEditingController();
-  final TextEditingController visaSubCategoryController = TextEditingController();
+  final TextEditingController visaTypeController = TextEditingController();
   final TextEditingController arrivalDateController = TextEditingController();
   final TextEditingController departureDateController = TextEditingController();
   final TextEditingController accommodationController = TextEditingController();
@@ -36,7 +36,7 @@ class VisaTypeSelectionController extends GetxController {
 
   final PageController pageController = PageController(initialPage: 0);
 
-  late List<VisaType> visaTypes;
+  late List<VisaType> visaTypes = [];
   List<String> purposes = [
     'Sightseeing / Holidaying',
     'Visiting friends and relatives',
@@ -50,7 +50,7 @@ class VisaTypeSelectionController extends GetxController {
   ];
 
   @override
-  void onInit() {
+  void onInit() async{
     _getVisaTypes();
     super.onInit();
   }
@@ -76,11 +76,11 @@ class VisaTypeSelectionController extends GetxController {
 
       ApplicantEntity entity = ApplicantEntity(
         countryId: countryIdController.text,
-        visaTypeId: visaSubCategoryController.text,
+        visaTypeId: visaTypeController.text,
         startDate: DateTime.parse(arrivalDateController.text),
       );
 
-
+      Get.to(()=>ApplicantsScreen(entity, travelTypeController.text == "Group"));
     }
   }
 
@@ -113,7 +113,7 @@ class VisaTypeSelectionController extends GetxController {
       case 2:
         return travelTypeController.text.isNotEmpty; // Page 2 validation: travel type
       case 3:
-        return visaSubCategoryController.text.isNotEmpty; // Page 3 validation: visa sub-category
+        return visaTypeController.text.isNotEmpty; // Page 3 validation: visa sub-category
       case 4:
         return arrivalDateController.text.isNotEmpty; // Page 4 validation: arrival date
       default:
@@ -122,12 +122,11 @@ class VisaTypeSelectionController extends GetxController {
   }
 
   void _getVisaTypes(){
-    ParadiseDataBase.visaTypes.then((value) {
-      if(value == null){
+    List<VisaType>? types = ParadiseDataBase.visaTypes;
+      if(types == null){
         visaTypes = [];
         return;
       }
-      visaTypes = value;
-    });
+      visaTypes = types;
   }
 }

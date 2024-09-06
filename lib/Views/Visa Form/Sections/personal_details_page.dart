@@ -11,7 +11,7 @@ class PersonalDetailsScreen extends StatelessWidget {
 
   PersonalDetailsScreen({super.key});
 
-  VisaApplicationController sectionController = VisaApplicationController.instance;
+  final VisaApplicationController controller = VisaApplicationController.instance;
 
   void _showCountryPicker(BuildContext context) {
     showCountryPicker(
@@ -19,7 +19,7 @@ class PersonalDetailsScreen extends StatelessWidget {
       exclude: <String>['LK'],
       showPhoneCode: false,
       onSelect: (Country country) {
-        sectionController.nationalityController.text = HelperFunctions.isoToPassportCode(country.countryCode);
+        controller.nationalityController.text = HelperFunctions.isoToPassportCode(country.countryCode);
       },
       moveAlongWithKeyboard: false,
       countryListTheme: CountryListThemeData(
@@ -49,7 +49,7 @@ class PersonalDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(5.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -64,7 +64,7 @@ class PersonalDetailsScreen extends StatelessWidget {
               isRequired: true,
               questionText: 'What is your surname?',
               labelText: 'Surname',
-              controller: sectionController.surnameController,
+              controller: controller.surnameController,
             ),
             const SizedBox(height: 25),
 
@@ -73,7 +73,7 @@ class PersonalDetailsScreen extends StatelessWidget {
               isRequired: true,
               questionText: 'What are your other names?',
               labelText: 'Other names',
-              controller: sectionController.otherNamesController,
+              controller: controller.otherNamesController,
             ),
             const SizedBox(height: 25),
 
@@ -85,16 +85,21 @@ class PersonalDetailsScreen extends StatelessWidget {
               initialDate: DateTime.now(),
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
-              controller: sectionController.birthdayController,
+              controller: controller.birthdayController,
             ),
             const SizedBox(height: 25),
 
             // Place of Birth Field
-            CustomTextInputField(
-              isRequired: true,
-              questionText: 'Where were you born?',
-              labelText: 'Place of Birth',
-              controller: sectionController.placeOfBirthController,
+            GestureDetector(
+              onTap: () => _showCountryPicker(context),
+              child: AbsorbPointer(
+                child: CustomTextInputField(
+                  isRequired: true,
+                  questionText: 'Where were you born?',
+                  labelText: 'Select Country',
+                  controller: controller.placeOfBirthController,
+                ),
+              ),
             ),
             const SizedBox(height: 25),
 
@@ -104,7 +109,7 @@ class PersonalDetailsScreen extends StatelessWidget {
               questionText: 'What is your Gender?',
               labelText: 'Gender',
               items: const ['Male', 'Female', 'Other'].map((element)=> Tuple2(element, element)).toList(),
-              controller: sectionController.genderController,
+              controller: controller.genderController,
 
             ),
             const SizedBox(height: 25),
@@ -117,7 +122,7 @@ class PersonalDetailsScreen extends StatelessWidget {
                   isRequired: true,
                   questionText: 'What is your nationality?',
                   labelText: 'Select Country',
-                  controller: sectionController.nationalityController,
+                  controller: controller.nationalityController,
                 ),
               ),
             ),
@@ -128,7 +133,7 @@ class PersonalDetailsScreen extends StatelessWidget {
               isRequired: true,
               questionText: 'What is your passport number?',
               labelText: 'Passport Number',
-              controller: sectionController.passportNumberController,
+              controller: controller.passportNumberController,
             ),
             const SizedBox(height: 25),
 
@@ -140,15 +145,32 @@ class PersonalDetailsScreen extends StatelessWidget {
               initialDate: DateTime.now(),
               firstDate: DateTime.now(),
               lastDate: DateTime(2100),
-              controller: sectionController.passportExpiryDateController,
+              controller: controller.passportExpiryDateController,
             ),
             const SizedBox(height: 25),
+
+            controller.isMainApplicant ? const SizedBox() : CustomDropdownField(
+              questionText: 'What is the relationship with the main applicant?',
+              labelText: 'Relationship',
+              items: const [
+                'Spouse',
+                'Child',
+                'Parent',
+                'Sibling',
+                'Dependent',
+                'Partner',
+                'Relative',
+                'Other'
+              ].map((element) => Tuple2(element, element)).toList(),
+              controller: controller.relationshipController,
+            ),
+            controller.isMainApplicant ? const SizedBox() : const SizedBox(height: 25),
 
             // Occupation Field
             CustomTextInputField(
               questionText: 'What is your occupation?',
               labelText: 'Occupation',
-              controller: sectionController.occupationController,
+              controller: controller.occupationController,
             ),
             const SizedBox(height: 25),
 
@@ -156,7 +178,7 @@ class PersonalDetailsScreen extends StatelessWidget {
               questionText: 'What is your Martial Status?',
               labelText: 'Martial Status',
               items: const ['Single', 'Married', 'Divorced'].map((element) => Tuple2(element, element)).toList(),
-              controller: sectionController.genderController,
+              controller: controller.genderController,
 
             ),
             const SizedBox(height: 25),
@@ -166,14 +188,14 @@ class PersonalDetailsScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (sectionController.currentPage.value > 0)
+                  if (controller.currentPage.value > 0)
                     ElevatedButton(
-                      onPressed: sectionController.previousPage,
+                      onPressed: controller.previousPage,
                       child: const Text('Back'),
                     ),
-                  if (sectionController.currentPage.value < 3)
+                  if (controller.currentPage.value < 3)
                     ElevatedButton(
-                      onPressed: sectionController.nextPage,
+                      onPressed: controller.nextPage,
                       child: const Text('Next'),
                     ),
                 ],

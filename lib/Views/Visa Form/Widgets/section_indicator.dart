@@ -5,7 +5,7 @@ import 'CircularIndicator.dart';
 import 'custome_dotted_line.dart';
 
 class SectionIndicator extends StatelessWidget {
-  final VisaApplicationController sectionController = Get.put(VisaApplicationController());
+  final VisaApplicationController controller = VisaApplicationController.instance;
 
   SectionIndicator({super.key});
 
@@ -17,15 +17,15 @@ class SectionIndicator extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularIndicator(status: sectionController.getStatus(1), number: 1),
+                CircularIndicator(status: controller.getStatus(1), number: 1),
                 const CustomDottedLine(),
-                CircularIndicator(status: sectionController.getStatus(2), number: 2),
+                CircularIndicator(status: controller.getStatus(2), number: 2),
                 const CustomDottedLine(),
-                CircularIndicator(status: sectionController.getStatus(3), number: 3),
+                CircularIndicator(status: controller.getStatus(3), number: 3),
                 const CustomDottedLine(),
-                CircularIndicator(status: sectionController.getStatus(4), number: 4),
+                CircularIndicator(status: controller.getStatus(4), number: 4),
                 const CustomDottedLine(),
-                CircularIndicator(status: sectionController.getStatus(5), number: 5),
+                CircularIndicator(status: controller.getStatus(5), number: 5),
               ],
             ),
             const SizedBox(height: 20),

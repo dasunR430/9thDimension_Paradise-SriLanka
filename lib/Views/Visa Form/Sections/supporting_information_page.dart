@@ -11,13 +11,14 @@ class SupportingDocumentsPage extends StatelessWidget {
 
   SupportingDocumentsPage({super.key});
 
-  PdfUploadController returnAirTicketController = PdfUploadController();
-  PdfUploadController accommodationPlaceDocumentController = PdfUploadController();
-  VisaApplicationController sectionController = VisaApplicationController.instance;
+  final PdfUploadController returnAirTicketController = PdfUploadController();
+  final PdfUploadController accommodationPlaceDocumentController = PdfUploadController();
+  final VisaApplicationController sectionController = VisaApplicationController.instance;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

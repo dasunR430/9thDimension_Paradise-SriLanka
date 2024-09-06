@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Views/Visa%20Type%20Selection/question_screen.dart';
 
 class VisaPortalScreen extends StatelessWidget {
   const VisaPortalScreen({super.key});
@@ -48,7 +50,7 @@ class VisaPortalScreen extends StatelessWidget {
                 // Apply for Visa Button
                 ElevatedButton(
                   onPressed: () {
-                    // Add action for "Apply for Visa" button
+                    Get.to(()=>QuestionScreen());
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue, // Button color

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'appbar_background.dart';
 import 'section_indicator.dart';
 
@@ -27,7 +28,8 @@ class FormAppBar extends SliverPersistentHeaderDelegate {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Section", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),),
-                SectionIndicator(),
+
+                SectionIndicator()
               ],
             ),
             const Padding(

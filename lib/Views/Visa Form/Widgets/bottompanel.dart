@@ -13,17 +13,17 @@ class BottomPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sectionController = Get.put(VisaApplicationController());
+    final VisaApplicationController controller = VisaApplicationController.instance;
 
     return Column(
         children: [
-          Container(
+          SizedBox(
             height: 1500,
             child: PageView(
               //physics: NeverScrollableScrollPhysics(),
-              controller: PageController(),
+              controller: controller.pageController,
               onPageChanged: (int page) {
-                sectionController.currentPage.value = page;
+                controller.onPageChange(page);
               },
               children: [
                 PassportAndPhotoScreen(),

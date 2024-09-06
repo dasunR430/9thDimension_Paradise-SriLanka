@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Models/entity.dart';
 
 import '../../Controllers/applicants_controller.dart';
 import 'Widgets/add_applicant_button.dart';
 import 'Widgets/visa_applicant_card.dart';
 
 class ApplicantsScreen extends StatelessWidget {
+  ApplicantsScreen(this.entity, this.isGroup, {super.key}){
+    Get.lazyPut(()=>ApplicantController(entity));
+    controller = ApplicantController.instance;
+  }
+
+  final ApplicantEntity entity;
+  final bool isGroup;
+  late final ApplicantController controller;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,8 +24,7 @@ class ApplicantsScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GetBuilder<ApplicantController>(
-          init: ApplicantController(),
-          builder: (controller) {
+          builder: (_) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -32,17 +40,15 @@ class ApplicantsScreen extends StatelessWidget {
                     children: [
                       const Text("Main Applicant", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue)),
                       const SizedBox(height: 10),
-                      controller?.applicantEntity.mainVisaApplicant != null
+                      controller.applicantEntity.mainVisaApplicant != null
                           ? VisaApplicantCard(
-                        applicant: controller?.applicantEntity.mainVisaApplicant,
+                        applicant: controller.applicantEntity.mainVisaApplicant,
                         onRemove: () {
-                          // Optionally, add a method to remove main applicant
                         },
                       )
                           : AddApplicantButton(
                         onPressed: () {
-                          // Add your logic here to open a dialog or navigate to add a main applicant
-                          controller?.testAddMainApplicant();
+                          controller.addMainApplicant();
                         },
                         label: "+ Add Main Applicant",
                       ),
@@ -50,7 +56,7 @@ class ApplicantsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Container(
+                isGroup ? Container(
                   padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                   decoration: BoxDecoration(
                     color: Colors.blue.shade50,
@@ -63,22 +69,22 @@ class ApplicantsScreen extends StatelessWidget {
                       const Text("Other Applicants", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue)),
                       const SizedBox(height: 10),
                       if (controller.applicantEntity.mainVisaApplicant != null)
-                        ...?controller.applicantEntity.applicants?.map(
-                              (applicant) => VisaApplicantCard(
-                            applicant: applicant,
-                            onRemove: () => controller?.removeApplicant(applicant),
+                        ...?controller.applicantEntity.entityMembers?.map(
+                              (entityMember) => VisaApplicantCard(
+                            applicant: entityMember.applicant,
+                            onRemove: () => controller.removeApplicant(entityMember),
                           ),
                         )
                       else
                         AddApplicantButton(
                           onPressed: () {
-                            controller?.testAddOtherApplicant();
+                            controller.addOtherApplicant();
                           },
-                          label: "+ Add Other Applicant",
+                          label: "+ Add another Applicant",
                         ),
                     ],
                   ),
-                ),
+                ): const SizedBox(),
               ],
             );
           },

@@ -45,13 +45,13 @@ class CustomDropdownField extends StatelessWidget {
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            labelText: items.firstWhere((item) => item.item1 == controller?.text, orElse: () => const Tuple2('', 'Option')).item2,
+            labelText: items.firstWhere((item) => item.item1 == controller?.text, orElse: () => const Tuple2('', 'Select')).item2 ,
             border: const OutlineInputBorder(),
           ),
           items: items.map((Tuple2<String, String> pair) {
             return DropdownMenuItem<String>(
               value: pair.item1,
-              child: SizedBox(width: HelperFunctions.screenWidth()-90, child: Text(pair.item2, maxLines: 3, style: const TextStyle(overflow: TextOverflow.ellipsis, ))),
+              child: SizedBox(width: HelperFunctions.screenWidth()-120, child: Text(pair.item2, maxLines: 3, style: const TextStyle(overflow: TextOverflow.ellipsis, ))),
             );
           }).toList(),
           onChanged: (String? value) {

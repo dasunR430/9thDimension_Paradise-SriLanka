@@ -50,10 +50,11 @@ class PassportAndPhotoScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (sectionController.currentPage.value > 0)
-                    ElevatedButton(
+                    OutlinedButton(
                       onPressed: sectionController.previousPage,
                       child: const Text('Back'),
                     ),
+                  const Expanded(child: SizedBox()),
                   if (sectionController.currentPage.value < 3)
                     ElevatedButton(
                       onPressed: sectionController.nextPage,
