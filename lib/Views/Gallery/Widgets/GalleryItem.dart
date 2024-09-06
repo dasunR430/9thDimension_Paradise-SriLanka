@@ -11,7 +11,6 @@ class GalleryItem extends StatelessWidget {
     required this.height,
   });
 
-  @overrid
   Widget build(BuildContext context) {
     return Container(
       height: height,  // Use the random height
