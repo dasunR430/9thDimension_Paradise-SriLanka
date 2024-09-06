@@ -4,6 +4,7 @@ import 'package:paradise_sri_lanka/Common/Widgets/custom_date_picker.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
 import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart';
 import '../../../Common/Widgets/custom_dropdown_field.dart';
+import '../../../Utils/helpers/helper_functions.dart';
 
 class PersonalDetailsScreen extends StatelessWidget {
 
@@ -14,12 +15,10 @@ class PersonalDetailsScreen extends StatelessWidget {
   void _showCountryPicker(BuildContext context) {
     showCountryPicker(
       context: context,
-      //exclude: <String>['KN', 'MF'],
-      favorite: <String>['SE'],
+      exclude: <String>['LK'],
       showPhoneCode: false,
       onSelect: (Country country) {
-        print('Selected country: ${country.displayName}');
-        sectionController.nationalityController.text = country.displayName;
+        sectionController.nationalityController.text = HelperFunctions.isoToPassportCode(country.countryCode);
       },
       moveAlongWithKeyboard: false,
       countryListTheme: CountryListThemeData(

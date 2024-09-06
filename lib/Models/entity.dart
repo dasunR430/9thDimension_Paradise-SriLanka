@@ -3,7 +3,7 @@ import 'package:paradise_sri_lanka/Models/visa_applicant.dart';
 class ApplicantEntity {
   String? entityId;
   VisaApplicant? mainVisaApplicant;
-  List<VisaApplicant> applicants;
+  List<VisaApplicant>? applicants;
   String countryId;
   String visaSubCategory;
   DateTime arrivalDate;
@@ -16,7 +16,7 @@ class ApplicantEntity {
   ApplicantEntity({
     this.entityId,
     this.mainVisaApplicant,
-    required this.applicants,
+    this.applicants,
     required this.countryId,
     required this.visaSubCategory,
     required this.arrivalDate,
@@ -32,7 +32,7 @@ class ApplicantEntity {
     return {
       'entityId': entityId,
       'mainVisaApplicant': mainVisaApplicant?.toMap(),
-      'applicants': applicants.map((applicant) => applicant.toMap()).toList(),
+      'applicants': applicants?.map((applicant) => applicant.toMap()).toList(),
       'countryId': countryId,
       'visaSubCategory': visaSubCategory,
       'arrivalDate': arrivalDate.toIso8601String(),

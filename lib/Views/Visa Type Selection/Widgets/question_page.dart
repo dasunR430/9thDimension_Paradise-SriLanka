@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_date_picker.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
+import 'package:paradise_sri_lanka/Utils/helpers/helper_functions.dart';
 import '../../../Common/Widgets/custom_dropdown_field.dart';
 
 class QuestionPage extends StatelessWidget {
@@ -31,10 +32,10 @@ class QuestionPage extends StatelessWidget {
   void _showCountryPicker(BuildContext context) {
     showCountryPicker(
       context: context,
-      favorite: <String>['SE'],
       showPhoneCode: false,
+      exclude: ['LK'],
       onSelect: (Country country) {
-        textController.text = country.name;
+        textController.text = HelperFunctions.isoToPassportCode(country.countryCode);
       },
       moveAlongWithKeyboard: false,
       countryListTheme: CountryListThemeData(

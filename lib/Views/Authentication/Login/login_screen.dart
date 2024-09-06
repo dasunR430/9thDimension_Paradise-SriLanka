@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../Controllers/login_screen_controller.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
-  //final LoginController loginController = Get.put(LoginController());
+  final LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-
-          //Background Image
+          // Background Image
           Container(
             width: double.infinity,
             height: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/screenbackground.png'), // Use your image here
+                image: AssetImage('assets/images/screenbackground.png'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-
           // Form Elements
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -30,7 +30,6 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-
                 const Text(
                   'Sign in',
                   style: TextStyle(
@@ -38,13 +37,11 @@ class LoginPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 const SizedBox(height: 20),
                 // Email Field
-
                 TextField(
                   onChanged: (value) {
-                    //loginController.onEmailChanged(value);
+                    loginController.emailController.text = value;
                   },
                   decoration: const InputDecoration(
                     labelText: 'Email',
@@ -52,11 +49,10 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 // Password Field
                 TextField(
                   onChanged: (value) {
-                    //loginController.onPasswordChanged(value);
+                    loginController.passwordController.text = value;
                   },
                   obscureText: true,
                   decoration: const InputDecoration(
@@ -64,33 +60,31 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(),
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      // Handle forgot password
+                      //TODO
                     },
                     child: const Text('Forgot password?'),
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
                 ElevatedButton(
                   onPressed: () {
-                    // Handle sign-in logic
+
+                    loginController.signIn(
+                      loginController.emailController.text,
+                      loginController.passwordController.text,
+                    );
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(319, 54), // Button size as per your request
+                    minimumSize: const Size(319, 54),
                   ),
                   child: const Text('Sign in'),
                 ),
-
                 const SizedBox(height: 20),
-
                 Center(
                   child: TextButton(
                     onPressed: () {
@@ -99,7 +93,6 @@ class LoginPage extends StatelessWidget {
                     child: const Text("Don't have an account?"),
                   ),
                 ),
-
               ],
             ),
           ),
