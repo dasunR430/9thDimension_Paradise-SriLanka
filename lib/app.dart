@@ -7,10 +7,7 @@ import 'package:provider/provider.dart';
 import 'Utils/constants/text_strings.dart';
 import 'Utils/theme/theme.dart';
 import 'Utils/theme/theme_notifier.dart';
-import 'Views/Applicants Screen/applicants_screen.dart';
-import 'Views/Authentication/Login/login_screen.dart';
 import 'Views/Visa Portal/visa_portal_screen.dart';
-import 'Views/Visa Type Selection/visa_type_selection.dart';
 
 
 class App extends StatelessWidget {
@@ -28,7 +25,7 @@ class App extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeNotifier.themeMode,
       debugShowCheckedModeBanner: false,
-      home: VisaPortalScreen(),
+      home: const VisaPortalScreen(),
       // const Selector()
     );
   }

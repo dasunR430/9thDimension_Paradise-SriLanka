@@ -1,48 +1,164 @@
 import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Models/entity.dart';
+import 'package:paradise_sri_lanka/Models/travelled_country.dart';
 import 'package:paradise_sri_lanka/Models/visa_applicant.dart';
-
-import '../Models/entity.dart';
+import 'package:paradise_sri_lanka/Models/entity_member.dart';
+import 'package:paradise_sri_lanka/Services/API/database.dart';
+import 'package:paradise_sri_lanka/Views/Applicants%20Screen/applicants_screen.dart';
+import 'package:paradise_sri_lanka/Views/Visa%20Form/form_screen.dart';
 
 class ApplicantController extends GetxController {
-  // Initialize ApplicantEntity with hard-coded test data
-  final ApplicantEntity _applicantEntity = ApplicantEntity(
-    countryId: 'SL',
-    visaSubCategory: 'Tourist',
-    arrivalDate: DateTime.now(),
-    departureDate: DateTime.now().add(Duration(days: 7)),
-    mainVisaApplicant: null, // Main applicant not added yet
-    applicants: [],
-  );
+  late final Rx<ApplicantEntity> _applicantEntity;
+  String _applicantType = "";
+  String _visaSelectionType = "";
 
-  ApplicantEntity get applicantEntity => _applicantEntity;
+  String get applicantType => _applicantType;
+  String get visaSelectionType => _visaSelectionType;
 
-  // Add main applicant
-  void addMainApplicant(VisaApplicant applicant) {
-    _applicantEntity.mainVisaApplicant = applicant;
-    update(); // Update the UI
+  void setApplicantType(String t) {
+    _applicantType = t;
   }
 
-  // Add other applicant
-  void addOtherApplicant(VisaApplicant applicant) {
-    if (_applicantEntity.mainVisaApplicant == null) {
-      // Main applicant must be added first
-      return;
-    }
-    _applicantEntity.applicants?.add(applicant);
-    update(); // Update the UI
+  void setVisaSelectionType(String t) {
+    _visaSelectionType = t;
   }
 
-  // Remove an applicant
-  void removeApplicant(VisaApplicant applicant) {
-    if (_applicantEntity.applicants != null) {
-      _applicantEntity.applicants!.remove(applicant);
-      update(); // Update the UI
+  ApplicantController() {
+    _initializeApplicantEntity();
+  }
+
+  void _initializeApplicantEntity() {
+    try {
+      _applicantEntity = ApplicantEntity(
+        countryId: 'SL',
+        visaTypeId: 'TOURIST',
+        startDate: DateTime.now(),
+        travelHistory: [],
+      ).obs;
+    } catch (e) {
+      _applicantEntity = ApplicantEntity(
+        countryId: 'SL',
+        visaTypeId: 'TOURIST',
+        startDate: DateTime.now(),
+        travelHistory: [],
+      ).obs;
     }
+  }
+
+  ApplicantEntity get applicantEntity => _applicantEntity.value;
+
+  // Method to update main applicant details
+  void updateMainApplicant(VisaApplicant applicant) {
+    _applicantEntity.update((val) {
+      val?.mainVisaApplicant = applicant;
+    });
+  }
+
+  // Method to add main applicant
+  void addMainApplicant() {
+    // Implement the logic to add main applicant
+    if (applicantEntity.mainVisaApplicant != null) {
+      //
+    } else {
+      //
+      Get.off(() => FormScreen("Main", "Group"));
+
+    }
+  }
+
+  // Method to remove main applicant
+  void removeMainApplicant() {
+    _applicantEntity.update((val) {
+      val?.mainVisaApplicant = null;
+    });
+    Get.to(()=>ApplicantsScreen());
+  }
+
+  // Method to update other applicants
+  void addOtherApplicant() {
+    if (applicantEntity.mainVisaApplicant != null) {
+      Get.off(() => FormScreen("Other", "Group"));
+    }else{
+      Get.snackbar("Invalid Route", "Main applicant should be added way before adding other applicants");
+    }
+  }
+
+  void removeApplicant(EntityMember applicant) {
+    _applicantEntity.update((val) {
+      val?.entityMembers?.remove(applicant);
+    });
+  }
+
+  // Method to set Visa Type and Country
+  void setVisaDetails({
+    required String countryId,
+    required String visaTypeId,
+    required DateTime startDate,
+  }) {
+    _applicantEntity.update((val) {
+      val?.countryId = countryId;
+      val?.visaTypeId = visaTypeId;
+      val?.startDate = startDate;
+      val?.endDate = startDate.add(
+          Duration(days: ParadiseDataBase.getVisaType(visaTypeId).duration));
+    });
+  }
+
+  void addTravelHistory(TravelledCountry country) {
+    _applicantEntity.update((val) {
+      val?.travelHistory.add(country);
+    });
+  }
+
+  void removeTravelHistory(int index) {
+    _applicantEntity.update((val) {
+      val?.travelHistory.removeAt(index);
+    });
+  }
+
+  // Method to update Accommodation Details
+  void updateAccommodationDetails({
+    String? accommodationPlaceDocumentURL,
+    String? addressOfStay,
+    String? cityOfStay,
+    String? zipOfStay,
+  }) {
+    _applicantEntity.update((val) {
+      val?.accommodationPlaceDocumentURL = accommodationPlaceDocumentURL;
+      val?.addressOfStay = addressOfStay;
+      val?.cityOfStay = cityOfStay;
+      val?.zipOfStay = zipOfStay;
+    });
+  }
+
+  // Method to finalize and save applicant data
+  void finalizeApplication(VisaApplicant applicant) {
+    if (_applicantType == "Main") {
+      // Update the main applicant in ApplicantController
+      updateMainApplicant(applicant);
+
+      Get.snackbar('Success', 'Visa Applicant data saved successfully.');
+
+      if (_visaSelectionType == "Individual") {
+        //Go to submit
+      } else {
+        Get.off(() => const ApplicantsScreen());
+      }
+    } else {
+      _applicantEntity.update((val) {
+        val?.addEntityMember(applicant);
+      });
+      Get.off(() => const ApplicantsScreen());
+    }
+
+    // You can implement saving to a database or any other persistence layer here
+    // For example:
+    // ParadiseDataBase.saveApplicant(_applicantEntity.value.toMap());
   }
 
   // Test data for main applicant
   void testAddMainApplicant() {
-    addMainApplicant(VisaApplicant(
+    updateMainApplicant(VisaApplicant(
       passportBioPageURL: 'https://example.com/bio.jpg',
       passportPhotoURL: 'https://example.com/photo.jpg',
       passportNumber: 'A1234567',
@@ -62,38 +178,31 @@ class ApplicantController extends GetxController {
       emergencyContactPersonName: 'Jane Doe',
       emergencyContactPersonPhoneCountryCode: '+1',
       emergencyContactPersonPhone: '1122334455',
+      occupation: 'Engineer',
+      maritalStatus: 'Single',
+      accommodationPlaceDocumentURL: 'https://example.com/accommodation.pdf',
+      returnAirTicketURL: 'https://example.com/ticket.pdf',
+      hasVisitedBefore: false,
+      lastVisitedDate: null,
+      facebookURL: 'https://facebook.com/johndoe',
+      instagramURL: 'https://instagram.com/johndoe',
+      xURL: 'https://x.com/johndoe',
+      linkedInURL: 'https://linkedin.com/in/johndoe',
+      travelHistory: [],
+      faceImagePath: 'path/to/face/image.jpg',
     ));
   }
 
   // Test data for other applicant
   void testAddOtherApplicant() {
-    addOtherApplicant(VisaApplicant(
-      passportBioPageURL: 'https://example.com/bio2.jpg',
-      passportPhotoURL: 'https://example.com/photo2.jpg',
-      passportNumber: 'B7654321',
-      passportExpiryDate: DateTime(2032, 11, 30),
-      surname: 'Smith',
-      givenNames: 'Alice',
-      dateOfBirth: DateTime(1990, 8, 22),
-      placeOfBirth: 'Los Angeles',
-      nationality: 'American',
-      gender: 'Female',
-      phoneNumberCountryCode: '+1',
-      phoneNumber: '2345678901',
-      whatsAppNumberCountryCode: '+1',
-      whatsAppNumber: '1098765432',
-      homeAddress: '456 Maple Avenue',
-      email: 'alice.smith@example.com',
-      emergencyContactPersonName: 'Bob Smith',
-      emergencyContactPersonPhoneCountryCode: '+1',
-      emergencyContactPersonPhone: '2233445566',
-    ));
+    addOtherApplicant();
   }
 
   // Test data for removing an applicant
   void testRemoveApplicant() {
-    if (_applicantEntity.applicants != null && _applicantEntity.applicants!.isNotEmpty) {
-      removeApplicant(_applicantEntity.applicants!.first);
+    if (_applicantEntity.value.entityMembers != null &&
+        _applicantEntity.value.entityMembers!.isNotEmpty) {
+      removeApplicant(_applicantEntity.value.entityMembers!.first);
     }
   }
 }

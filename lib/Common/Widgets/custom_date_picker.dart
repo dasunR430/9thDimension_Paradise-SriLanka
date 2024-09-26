@@ -11,7 +11,7 @@ class CustomDatePickerField extends StatelessWidget {
   final bool isRequired;
 
   const CustomDatePickerField({
-    Key? key,
+    super.key,
     required this.questionText,
     required this.labelText,
     required this.initialDate,
@@ -19,7 +19,7 @@ class CustomDatePickerField extends StatelessWidget {
     required this.lastDate,
     this.controller,
     this.isRequired = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +58,11 @@ class CustomDatePickerField extends StatelessWidget {
               firstDate: firstDate,
               lastDate: lastDate,
             );
-            if (pickedDate != null) {
-              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-              if (controller != null) {
-                controller!.text = formattedDate;
-              }
+            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
+            if (controller != null) {
+              controller!.text = formattedDate;
             }
-          },
+                    },
         ),
       ],
     );

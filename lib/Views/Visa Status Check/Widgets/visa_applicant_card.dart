@@ -8,7 +8,7 @@ class VisaApplicationView extends StatelessWidget {
   final String applicationDate;
   final String passportNumber;
 
-  VisaApplicationView({
+  const VisaApplicationView({
     super.key,
     required this.applicantName,
     required this.visaType,

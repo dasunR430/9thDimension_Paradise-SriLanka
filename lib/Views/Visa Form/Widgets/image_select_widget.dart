@@ -2,26 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paradise_sri_lanka/Controllers/image_select_controller.dart';
 import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart';
-import '../../../Controllers/image_upload_controller.dart';
 
-class ImageUploadWidget extends StatelessWidget {
+class ImageSelectWidget extends StatelessWidget {
   final String instructionText;
-  final ImageUploadController controller;
+  final ImageSelectController controller;
   final bool isRequired;
   final String questionText;
   final String type;
   final VisaApplicationController section;
-  final ImageSelectController passportPhotoController;
 
-  const ImageUploadWidget(
-      {super.key,
-      required this.instructionText,
-      required this.controller,
-      this.isRequired = false,
-      required this.questionText,
-      required this.type,
-      required this.section,
-      required this.passportPhotoController});
+  const ImageSelectWidget({
+    super.key,
+    required this.instructionText,
+    required this.controller,
+    this.isRequired = false,
+    required this.questionText,
+    required this.type,
+    required this.section,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +64,7 @@ class ImageUploadWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 8.0),
                     ElevatedButton(
-                      onPressed: () => controller.pickAndUploadImage(
-                          section, passportPhotoController),
+                      onPressed: () => controller.pickImage(section),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         foregroundColor: Colors.white,
@@ -94,8 +91,7 @@ class ImageUploadWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 16.0),
                     ElevatedButton.icon(
-                      onPressed: () => controller.pickAndUploadImage(
-                          section, passportPhotoController),
+                      onPressed: () => controller.pickImage(section),
                       icon: const Icon(Icons.photo_camera),
                       label: const Text('Upload image'),
                       style: ElevatedButton.styleFrom(
