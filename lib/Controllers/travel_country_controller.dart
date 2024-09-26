@@ -11,6 +11,11 @@ class TravelledCountryController extends GetxController {
     travelledCountryList.add(travelledCountry);
   }
 
+  void updateTravelledCountry(int index, TravelledCountry travelledCountry) {
+    travelledCountryList[index] = travelledCountry;
+    travelledCountryList.refresh();
+  }
+
   // Method to remove an entry from the list
   void removeTravelledCountry(int index) {
     travelledCountryList.removeAt(index);

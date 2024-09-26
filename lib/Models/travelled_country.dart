@@ -1,10 +1,8 @@
-import 'package:file_picker/file_picker.dart';
-
 class TravelledCountry {
   String country;
   DateTime entryDate;
   String purpose;
-  PlatformFile? attachment;
+  String? attachment;
 
   TravelledCountry({
     required this.country,
@@ -18,6 +16,7 @@ class TravelledCountry {
       country: map['country'] ?? '',
       entryDate: DateTime.parse(map['entryDate']),
       purpose: map['purpose'] ?? '',
+      attachment: map['attachment'],
     );
   }
 
@@ -27,6 +26,7 @@ class TravelledCountry {
       'country': country,
       'entryDate': entryDate.toIso8601String(),
       'purpose': purpose,
+      'attachmentPath': attachment,
     };
   }
 }

@@ -96,7 +96,7 @@ class VisaPopup extends StatelessWidget {
                     // Details action here
                   },
                   style: OutlinedButton.styleFrom(
-                    minimumSize: Size(319, 54),
+                    minimumSize: const Size(319, 54),
                   ),
                   child: const Text('Details'),
                 ),
@@ -106,7 +106,7 @@ class VisaPopup extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   style: OutlinedButton.styleFrom(
-                    minimumSize: Size(319, 54),
+                    minimumSize: const Size(319, 54),
                   ),
                   child: const Text('Back'),
                 ),

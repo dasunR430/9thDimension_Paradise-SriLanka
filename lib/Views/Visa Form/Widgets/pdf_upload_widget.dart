@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:io';
 import '../../../Controllers/pdf_upload_controller.dart';
 
 class PdfUploadWidget extends StatelessWidget {
@@ -8,12 +7,14 @@ class PdfUploadWidget extends StatelessWidget {
   final PdfUploadController controller;
   final String questionText;
   final bool isRequired;
+  final String type;
 
-  PdfUploadWidget({
+  const PdfUploadWidget({
     super.key,
     required this.instructionText,
     required this.controller,
     required this.questionText,
+    required this.type,
     this.isRequired = false,
   });
 
@@ -38,7 +39,7 @@ class PdfUploadWidget extends StatelessWidget {
           ],
         ),
 
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
 
         Container(
           height: 250,
@@ -67,13 +68,13 @@ class PdfUploadWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 16.0),
                     ElevatedButton(
-                      onPressed: () => controller.pickPdf(), // Change or re-upload PDF
-                      child: const Text('Change PDF document'),
+                      onPressed: () => controller.pickPdf(type),
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.blue,
-                      ),
+                      ), // Change or re-upload PDF
+                      child: const Text('Change PDF document'),
                     ),
                   ],
                 );
@@ -94,11 +95,11 @@ class PdfUploadWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 16.0),
                     ElevatedButton.icon(
-                      onPressed: () => controller.pickPdf(), // Upload PDF
+                      onPressed: () => controller.pickPdf(type), // Upload PDF
                       icon: const Icon(Icons.upload_file),
                       label: const Text('Upload PDF document'),
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.blue,
                       ),

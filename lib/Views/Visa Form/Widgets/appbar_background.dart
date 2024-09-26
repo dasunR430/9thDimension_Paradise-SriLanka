@@ -8,10 +8,10 @@ class FormAppBarBackground extends StatelessWidget {
   final Widget? child;
 
   const FormAppBarBackground({
-    Key? key,
+    super.key,
     required this.height,
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

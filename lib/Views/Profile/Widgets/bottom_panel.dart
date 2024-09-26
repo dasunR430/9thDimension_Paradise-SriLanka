@@ -24,7 +24,7 @@ class BottomPanel extends StatelessWidget {
             labelColor: isDark ? Colors.white : Colors.black,
             tabAlignment: TabAlignment.start,
           ),
-          Container(
+          SizedBox(
             height: HelperFunctions.screenHeight() -
                 DeviceUtils.getAppBarHeight() -
                 DeviceUtils.getStatusBarHeight() -
@@ -78,8 +78,8 @@ class BottomPanel extends StatelessWidget {
                     ),
                   ]),
                 ),
-                Center(),
-                Center()
+                const Center(),
+                const Center()
               ],
             ),
           )

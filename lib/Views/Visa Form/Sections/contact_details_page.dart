@@ -4,10 +4,8 @@ import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
 import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart';
 
 class ContactDetailsScreen extends StatelessWidget {
-
-  ContactDetailsScreen({super.key});
-
-  VisaApplicationController sectionController = VisaApplicationController.instance;
+  final VisaApplicationController controller;
+  ContactDetailsScreen({Key? key, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +38,9 @@ class ContactDetailsScreen extends StatelessWidget {
               ),
               languageCode: "en",
               onChanged: (phone) {
-                sectionController.phoneNumberCountryCodeController.text = phone.countryCode;
-                sectionController.phoneNumberController.text = phone.number;
+                controller.phoneNumberCountryCodeController.value.text =
+                    phone.countryCode;
+                controller.phoneNumberController.value.text = phone.number;
               },
             ),
             const SizedBox(height: 20),
@@ -60,8 +59,9 @@ class ContactDetailsScreen extends StatelessWidget {
               ),
               languageCode: "en",
               onChanged: (phone) {
-                sectionController.whatsAppNumberCountryCodeController.text = phone.countryCode;
-                sectionController.whatsAppNumberController.text = phone.number;
+                controller.whatsAppNumberCountryCodeController.value.text =
+                    phone.countryCode;
+                controller.whatsAppNumberController.value.text = phone.number;
               },
             ),
             const SizedBox(height: 20),
@@ -71,7 +71,7 @@ class ContactDetailsScreen extends StatelessWidget {
               isRequired: true,
               questionText: 'What is your e-mail address?',
               labelText: 'E-mail',
-              controller: sectionController.emailController,
+              controller: controller.emailController.value,
             ),
             const SizedBox(height: 25),
 
@@ -80,7 +80,7 @@ class ContactDetailsScreen extends StatelessWidget {
               isRequired: true,
               questionText: 'What is your home address?',
               labelText: 'Home Address',
-              controller: sectionController.homeAddressController,
+              controller: controller.homeAddressController.value,
             ),
             const SizedBox(height: 25),
 
@@ -99,13 +99,13 @@ class ContactDetailsScreen extends StatelessWidget {
               isRequired: true,
               questionText: 'Name of the Person',
               labelText: 'Name',
-              controller: sectionController.emergencyContactPersonNameController,
+              controller: controller.emergencyContactPersonNameController.value,
             ),
             const SizedBox(height: 25),
 
             //Emergency Contact Person Phone Field
             const Text(
-              'Phone Number',
+              'Phone Number *',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 8),
@@ -118,8 +118,10 @@ class ContactDetailsScreen extends StatelessWidget {
               ),
               languageCode: "en",
               onChanged: (phone) {
-                sectionController.emergencyContactPersonPhoneCountryCodeController.text = phone.countryCode;
-                sectionController.emergencyContactPersonPhoneController.text = phone.number;
+                controller.emergencyContactPersonPhoneCountryCodeController
+                    .value.text = phone.countryCode;
+                controller.emergencyContactPersonPhoneController.value.text =
+                    phone.number;
               },
             ),
             const SizedBox(height: 20),
@@ -129,16 +131,14 @@ class ContactDetailsScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (sectionController.currentPage.value > 0)
-                    ElevatedButton(
-                      onPressed: sectionController.previousPage,
-                      child: const Text('Back'),
-                    ),
-                  if (sectionController.currentPage.value < 3)
-                    ElevatedButton(
-                      onPressed: sectionController.nextPage,
-                      child: const Text('Next'),
-                    ),
+                  ElevatedButton(
+                    onPressed: controller.previousPage,
+                    child: const Text('Back'),
+                  ),
+                  ElevatedButton(
+                    onPressed: controller.nextPage,
+                    child: const Text('Next'),
+                  ),
                 ],
               ),
             ),

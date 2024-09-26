@@ -1,24 +1,20 @@
-import 'package:http/http.dart' as http;
 import 'package:paradise_sri_lanka/Models/visaType.dart';
-import 'package:paradise_sri_lanka/Services/API/Exceptions/database_exception.dart';
-import 'dart:io';
-import 'package:path/path.dart';
 
-class ParadiseDataBase{
+class ParadiseDataBase {
   static const String _baseurl = 'http://10.10.13.11:3000/api/data';
 
   static List<VisaType> _visaTypes = [];
   static Future<List<VisaType>?> get visaTypes async {
-    if(_visaTypes.isNotEmpty) {
+    if (_visaTypes.isNotEmpty) {
       return _visaTypes;
     } else {
       await _getVisaTypes();
-      if(_visaTypes.isNotEmpty) return _visaTypes;
+      if (_visaTypes.isNotEmpty) return _visaTypes;
     }
     return null;
   }
 
-  static Future<void> _getVisaTypes() async{
+  static Future<void> _getVisaTypes() async {
     //TODO: Fetch data from the server
     _visaTypes = [
       VisaType.basicDetails(
@@ -41,7 +37,6 @@ class ParadiseDataBase{
         title: 'Tourist Visa – Two Years Multiple Entry Visa',
         duration: 180,
       ),
-
       VisaType.basicDetails(
         visaId: 'multi_5y',
         title: 'Tourist Visa – Five Years Multiple Entry Visa',
@@ -52,7 +47,6 @@ class ParadiseDataBase{
         title: 'Tourist Visa – Ten Years Multiple Entry Visa',
         duration: 180,
       ),
-
       VisaType.basicDetails(
         visaId: 'free_30',
         title: 'Tourist Visa – Free Visa',
@@ -60,9 +54,17 @@ class ParadiseDataBase{
       )
     ];
   }
-  
-  static VisaType getVisaType (String id) {
-    return _visaTypes.firstWhere((element) => element.visaId == id);
-  }
 
+  static VisaType getVisaType(String id) {
+    try {
+      return _visaTypes.firstWhere((element) => element.visaId == id);
+    } catch (e) {
+      // Return a default VisaType or throw a custom exception
+      return VisaType.basicDetails(
+        visaId: 'default',
+        title: 'Default Visa',
+        duration: 0,
+      );
+    }
+  }
 }

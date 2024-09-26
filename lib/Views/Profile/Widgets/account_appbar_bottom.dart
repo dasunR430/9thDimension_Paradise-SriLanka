@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountAppbarBottom extends StatelessWidget {
@@ -22,7 +21,7 @@ class AccountAppbarBottom extends StatelessWidget {
                             ),
             ),
             const SizedBox(height: 50.0),
-            Text("Vihanga Munasinghe", style: TextStyle(color: Colors.white, fontSize: 20,),)
+            const Text("Vihanga Munasinghe", style: TextStyle(color: Colors.white, fontSize: 20,),)
           ],
         ),
       ),

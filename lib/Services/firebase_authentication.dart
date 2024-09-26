@@ -95,12 +95,10 @@ class FirebaseAuthentication {
         String? phone = userCredential.user!.phoneNumber;
         String? picURL = userCredential.user!.photoURL;
         String pic = "";
-        if(picURL != null) {
-          final response = await http.get(Uri.parse(userCredential.user!.photoURL!));
-          Uint8List bytes = response.bodyBytes;
-          pic = ImageFormat.encodeBytesToBase64(bytes);
-        }
-        //TODO: Change this and un comment the code below
+        final response = await http.get(Uri.parse(userCredential.user!.photoURL!));
+        Uint8List bytes = response.bodyBytes;
+        pic = ImageFormat.encodeBytesToBase64(bytes);
+              //TODO: Change this and un comment the code below
         //await FirebaseDatabase().addUser(fresh_pick_user.User(firstName, lastName, phone ?? "", picString: pic));
       }
 
