@@ -21,12 +21,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
 
-
+    //Make the storage value for User on boarded false if it is null
+    GetStorage().writeIfNull("IsOnboarded", false);
     return GetMaterialApp(
       title: ConstantTexts.appName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
+      themeMode: themeNotifier.themeMode,
       debugShowCheckedModeBanner: false,
       home: ChatListScreen(),
     );

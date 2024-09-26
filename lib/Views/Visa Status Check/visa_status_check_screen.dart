@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paradise_sri_lanka/Views/Visa%20Status%20Check/Widgets/visa_applicant_card.dart';
 
 class VisaApplicationScreen extends StatelessWidget {
-  const VisaApplicationScreen({Key? key}) : super(key: key);
+  const VisaApplicationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class VisaApplicationScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
-          children: [
+          children: const [
             VisaApplicationView(
               applicantName: 'John Doe',
               visaType: 'Tourist Visa',
@@ -21,7 +21,7 @@ class VisaApplicationScreen extends StatelessWidget {
               applicationDate: '2024-09-01',
               passportNumber: 'N1234567',
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             VisaApplicationView(
               applicantName: 'Jane Smith',
               visaType: 'Business Visa',
@@ -29,7 +29,7 @@ class VisaApplicationScreen extends StatelessWidget {
               applicationDate: '2024-08-20',
               passportNumber: 'M8765432',
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             VisaApplicationView(
               applicantName: 'Alex Johnson',
               visaType: 'Student Visa',

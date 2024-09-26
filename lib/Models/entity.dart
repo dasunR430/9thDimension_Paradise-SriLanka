@@ -1,5 +1,5 @@
-import 'package:paradise_sri_lanka/Models/visaType.dart';
 import 'package:paradise_sri_lanka/Models/entity_member.dart';
+import 'package:paradise_sri_lanka/Models/travelled_country.dart';
 import 'package:paradise_sri_lanka/Models/visa_applicant.dart';
 import 'package:paradise_sri_lanka/Services/API/database.dart';
 
@@ -17,6 +17,10 @@ class ApplicantEntity {
   String? addressOfStay;
   String? cityOfStay;
   String? zipOfStay;
+  List<TravelledCountry> travelHistory;
+
+  ApplicantEntity get applicants => this;
+  List<TravelledCountry> get travelHistoryList => travelHistory;
 
   ApplicantEntity({
     this.entityId,
@@ -28,8 +32,10 @@ class ApplicantEntity {
     this.addressOfStay,
     this.cityOfStay,
     this.zipOfStay,
-  }){
-    endDate = startDate.add(Duration(days: ParadiseDataBase.getVisaType(visaTypeId).duration));
+    List<TravelledCountry>? travelHistory,
+  }) : travelHistory = travelHistory ?? [] {
+    endDate = startDate
+        .add(Duration(days: ParadiseDataBase.getVisaType(visaTypeId).duration));
   }
 
   // Convert an ApplicantEntity object to a map (for saving to a database)
@@ -37,7 +43,8 @@ class ApplicantEntity {
     return {
       'entityId': entityId,
       'mainVisaApplicant': mainVisaApplicant?.toMap(),
-      'entityMembers': entityMembers?.map((entityMember) => entityMember.toMap()).toList(),
+      'entityMembers':
+          entityMembers?.map((entityMember) => entityMember.toMap()).toList(),
       'countryId': countryId,
       'visaId': visaTypeId,
       'startDate': startDate.toIso8601String(),
@@ -46,6 +53,7 @@ class ApplicantEntity {
       'addressOfStay': addressOfStay,
       'cityOfStay': cityOfStay,
       'zipOfStay': zipOfStay,
+      'travelHistory': travelHistory.map((country) => country.toMap()).toList(),
     };
   }
 
@@ -53,8 +61,11 @@ class ApplicantEntity {
   ApplicantEntity.fromMap(Map<String, dynamic> map)
       : countryId = map['countryId'],
         startDate = DateTime.parse(map['startDate']),
-        visaTypeId = map['visaId'] {
-
+        visaTypeId = map['visaId'],
+        travelHistory = (map['travelHistory'] as List<dynamic>?)
+                ?.map((item) => TravelledCountry.fromMap(item))
+                .toList() ??
+            [] {
     entityId = map['entityId'];
 
     mainVisaApplicant = map['mainVisaApplicant'] != null
@@ -63,8 +74,9 @@ class ApplicantEntity {
 
     entityMembers = map['entityMembers'] != null
         ? List<EntityMember>.from(
-      map['entityMembers'].map((applicant) => EntityMember.fromMap(applicant)),
-    )
+            map['entityMembers']
+                .map((applicant) => EntityMember.fromMap(applicant)),
+          )
         : null;
 
     endDate = DateTime.parse(map['endDate']);
@@ -74,5 +86,25 @@ class ApplicantEntity {
     zipOfStay = map['zipOfStay'];
   }
 
+  void addTravelHistory(TravelledCountry country) {
+    travelHistory.add(country);
+  }
 
+  void removeTravelHistory(int index) {
+    if (index >= 0 && index < travelHistory.length) {
+      travelHistory.removeAt(index);
+    }
+  }
+
+  void addEntityMember(VisaApplicant visaApplicant){
+    EntityMember entityMember = EntityMember(applicant: visaApplicant, relation: "Temp");
+    entityMembers!.add(entityMember);
+  }
+  bool findRemoval(VisaApplicant visaApplicant, String email) {
+    return visaApplicant.email == email;
+  }
+
+  void removeEntityMember(VisaApplicant visaApplicant) {
+    entityMembers!.removeWhere((member) => findRemoval(member.applicant, visaApplicant.email));
+  }
 }

@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paradise_sri_lanka/Models/visaType.dart';
-import 'package:paradise_sri_lanka/Services/API/database.dart';
-import 'package:paradise_sri_lanka/Views/Applicants%20Screen/applicants_screen.dart';
+import 'package:paradise_sri_lanka/Views/Applicants%20Screen/test_sceen.dart';
+import 'package:paradise_sri_lanka/Views/Visa%20Form/form_screen.dart';
+import '../Models/visaType.dart';
+import '../Services/API/database.dart';
+import 'applicants_controller.dart';
 
-import '../Models/entity.dart';
+class VisaTypeSelectionController extends GetxController {
+  final ApplicantController applicantsController =
+      Get.find<ApplicantController>();
 
-class QuestionScreenController extends GetxController {
   RxInt currentPage = 0.obs;
   int _cPage = 0;
   var pages = 5;
   RxDouble progress = 0.0.obs;
 
-
+  final PageController pageController = PageController();
 
   final TextEditingController countryIdController = TextEditingController();
   final TextEditingController travelTypeController = TextEditingController();
   final TextEditingController purposeController = TextEditingController();
-  final TextEditingController visaTypeController = TextEditingController();
+  final TextEditingController visaSubCategoryController =
+      TextEditingController();
   final TextEditingController arrivalDateController = TextEditingController();
   final TextEditingController departureDateController = TextEditingController();
   final TextEditingController accommodationController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController zipController = TextEditingController();
-
 
   List<String> titles = [
     "Let's Start",
@@ -34,9 +37,7 @@ class QuestionScreenController extends GetxController {
     "Last Question"
   ];
 
-  final PageController pageController = PageController(initialPage: 0);
-
-  late List<VisaType> visaTypes = [];
+  late List<VisaType> visaTypes;
   List<String> purposes = [
     'Sightseeing / Holidaying',
     'Visiting friends and relatives',
@@ -50,17 +51,34 @@ class QuestionScreenController extends GetxController {
   ];
 
   @override
-  void onInit() async{
+  void onInit() {
     _getVisaTypes();
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    // Dispose controllers when not needed
+    pageController.dispose();
+    countryIdController.dispose();
+    travelTypeController.dispose();
+    purposeController.dispose();
+    visaSubCategoryController.dispose();
+    arrivalDateController.dispose();
+    departureDateController.dispose();
+    accommodationController.dispose();
+    addressController.dispose();
+    cityController.dispose();
+    zipController.dispose();
+    super.onClose();
+  }
+
   void nextPage() {
-    if (_cPage < pages-1) {
+    if (_cPage < pages - 1) {
       if (_validatePage()) {
         _cPage++;
         pageController.animateToPage(_cPage,
-            duration: Durations.short3, curve: Curves.linear);
+            duration: const Duration(milliseconds: 300), curve: Curves.linear);
         setIndicator();
       } else {
         Get.snackbar(
@@ -72,15 +90,47 @@ class QuestionScreenController extends GetxController {
           duration: const Duration(seconds: 2),
         );
       }
-    } else {
+    } else if (_cPage == pages - 1) {
+      if (_validatePage()) {
+        String countryId = countryIdController.text;
+        String visaTypeId = visaSubCategoryController.text;
+        DateTime? startDate = tryParseDate(arrivalDateController.text);
+        String travelType = travelTypeController.text;
 
-      ApplicantEntity entity = ApplicantEntity(
-        countryId: countryIdController.text,
-        visaTypeId: visaTypeController.text,
-        startDate: DateTime.parse(arrivalDateController.text),
-      );
+        if (startDate == null) {
+          Get.snackbar(
+            "Invalid Date",
+            "Please enter a valid date.",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.redAccent,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2),
+          );
+          return;
+        }
 
-      Get.to(()=>ApplicantsScreen(entity, travelTypeController.text == "Group"));
+        applicantsController.setVisaDetails(
+          countryId: countryId,
+          visaTypeId: visaTypeId,
+          startDate: startDate,
+        );
+
+        // Navigate based on travel type
+        if (travelType != "Individual") {
+          Get.off(() => ApplicantsScreen());
+        } else {
+          Get.off(() => FormScreen("Main","Individual"));
+        }
+      } else {
+        Get.snackbar(
+          "Incomplete Information",
+          "Please fill in all required fields before proceeding.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 2),
+        );
+      }
     }
   }
 
@@ -88,7 +138,7 @@ class QuestionScreenController extends GetxController {
     if (_cPage > 0) {
       _cPage--;
       pageController.animateToPage(_cPage,
-          duration: Durations.short3, curve: Curves.linear);
+          duration: const Duration(milliseconds: 300), curve: Curves.linear);
       setIndicator();
     }
   }
@@ -103,30 +153,39 @@ class QuestionScreenController extends GetxController {
     currentPage.value = _cPage;
   }
 
-  // Validation method to check if required fields are filled in on each page
+  // Validation method
   bool _validatePage() {
     switch (_cPage) {
       case 0:
-        return countryIdController.text.isNotEmpty; // Page 0 validation: country ID
+        return countryIdController.text.isNotEmpty;
       case 1:
-        return purposeController.text.isNotEmpty; // Page 1 validation: purpose
+        return purposeController.text.isNotEmpty;
       case 2:
-        return travelTypeController.text.isNotEmpty; // Page 2 validation: travel type
+        return travelTypeController.text.isNotEmpty;
       case 3:
-        return visaTypeController.text.isNotEmpty; // Page 3 validation: visa sub-category
+        return visaSubCategoryController.text.isNotEmpty;
       case 4:
-        return arrivalDateController.text.isNotEmpty; // Page 4 validation: arrival date
+        return arrivalDateController.text.isNotEmpty;
       default:
         return true;
     }
   }
 
-  void _getVisaTypes(){
-    List<VisaType>? types = ParadiseDataBase.visaTypes;
-      if(types == null){
+  DateTime? tryParseDate(String date) {
+    try {
+      return DateTime.parse(date);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void _getVisaTypes() {
+    ParadiseDataBase.visaTypes.then((value) {
+      if (value == null) {
         visaTypes = [];
         return;
       }
-      visaTypes = types;
+      visaTypes = value;
+    });
   }
 }

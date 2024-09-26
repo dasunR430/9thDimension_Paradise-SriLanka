@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paradise_sri_lanka/Common/Widgets/custom_dropdown_field.dart';
 
 class CreateAccountPage extends StatelessWidget {
   CreateAccountPage({super.key});
@@ -36,7 +35,7 @@ class CreateAccountPage extends StatelessWidget {
 
           Column(
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               Align(
                 alignment: Alignment.topLeft,

@@ -31,7 +31,7 @@ class ProfileAppBar extends SliverPersistentHeaderDelegate {
             ),
             shrinkOffset < maxExtent/4 ?Opacity(
                 opacity: (maxExtent- 4*shrinkOffset)/maxExtent,
-                child: AccountAppbarBottom()
+                child: const AccountAppbarBottom()
             )
                 : const SizedBox(),
           ],

@@ -5,6 +5,7 @@ import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
 import 'package:paradise_sri_lanka/Utils/helpers/helper_functions.dart';
 import 'package:tuple/tuple.dart';
 import '../../../Common/Widgets/custom_dropdown_field.dart';
+import '../../../Utils/helpers/helper_functions.dart';
 
 class QuestionPage extends StatelessWidget {
   final String title;
@@ -33,10 +34,11 @@ class QuestionPage extends StatelessWidget {
   void _showCountryPicker(BuildContext context) {
     showCountryPicker(
       context: context,
-      exclude: <String>['LK'],
+      exclude: ['LK'],
       showPhoneCode: false,
       onSelect: (Country country) {
-        textController.text = HelperFunctions.isoToPassportCode(country.countryCode);
+        textController.text =
+            HelperFunctions.isoToPassportCode(country.countryCode);
       },
       moveAlongWithKeyboard: false,
       countryListTheme: CountryListThemeData(
@@ -163,9 +165,9 @@ class QuestionPage extends StatelessWidget {
       children: [
         ElevatedButton(
           style: ButtonStyle(
-            fixedSize: WidgetStateProperty.all<Size>(const Size(319, 54)),
-            backgroundColor: WidgetStateProperty.all<Color>(Colors.blue),
-            side: WidgetStateProperty.all<BorderSide>(
+            fixedSize: MaterialStateProperty.all<Size>(const Size(319, 54)),
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            side: MaterialStateProperty.all<BorderSide>(
               const BorderSide(
                 color: Colors.blue,
                 width: 1.0,
@@ -173,15 +175,16 @@ class QuestionPage extends StatelessWidget {
             ),
           ),
           onPressed: onNext,
-          child: const Text('Next Question', style: TextStyle(fontSize: 19, color: Colors.white)),
+          child: const Text('Next Question',
+              style: TextStyle(fontSize: 19, color: Colors.white)),
         ),
         const SizedBox(height: 20),
         if (showBack)
           ElevatedButton(
             style: ButtonStyle(
-              fixedSize: WidgetStateProperty.all<Size>(const Size(319, 54)),
-              backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
-              side: WidgetStateProperty.all<BorderSide>(
+              fixedSize: MaterialStateProperty.all<Size>(const Size(319, 54)),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              side: MaterialStateProperty.all<BorderSide>(
                 const BorderSide(
                   color: Colors.blue,
                   width: 1.0,
@@ -200,4 +203,3 @@ class QuestionPage extends StatelessWidget {
     );
   }
 }
-

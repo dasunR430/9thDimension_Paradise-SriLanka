@@ -8,81 +8,106 @@ import 'package:tuple/tuple.dart';
 import '../Widgets/pdf_upload_widget.dart';
 
 class SupportingDocumentsPage extends StatelessWidget {
-  SupportingDocumentsPage({super.key});
+  VisaApplicationController controller = VisaApplicationController.instance;
 
-  final PdfUploadController returnAirTicketController = PdfUploadController();
-  final PdfUploadController accommodationPlaceDocumentController =
+  SupportingDocumentsPage({Key? key, required this.controller})
+      : super(key: key);
+
+  PdfUploadController returnAirTicketController = PdfUploadController();
+  PdfUploadController accommodationPlaceDocumentController =
       PdfUploadController();
-  final VisaApplicationController sectionController =
-      VisaApplicationController.instance;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Text(
-          '4. Supporting Information',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              '4. Supporting Information',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            PdfUploadWidget(
+              instructionText: 'Upload your return air ticket',
+              controller: returnAirTicketController,
+              questionText: 'Return Air Ticket',
+              type: "return",
+            ),
+            const SizedBox(height: 25),
+            PdfUploadWidget(
+              instructionText: 'Upload your accommodation booking confirmation',
+              controller: accommodationPlaceDocumentController,
+              questionText: 'Accommodation Booking Confirmation',
+              type: "accommodation",
+            ),
+            const SizedBox(height: 25),
+            CustomDropdownField(
+              questionText: 'Have you visited Sri Lanka before?',
+              labelText: 'Select',
+              items: const ['Yes', 'No']
+                  .map((element) => Tuple2(element, element))
+                  .toList(),
+              onChanged: (String? newValue) {
+                controller.hasVisitedBeforeController.value.text = newValue!;
+              },
+            ),
+            const SizedBox(height: 30),
+            CustomDatePickerField(
+              isRequired: true,
+              questionText: 'If yes when was it?',
+              labelText: 'Last visited date',
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+              controller: controller.lastVisitedDate.value,
+            ),
+            const SizedBox(height: 25),
+            CustomTextInputField(
+              questionText: 'Enter your Facebook Account URL.',
+              labelText: 'Facebook URL',
+              controller: controller.facebookURLController.value,
+            ),
+            const SizedBox(height: 25),
+            CustomTextInputField(
+              questionText: 'Enter your Instagram Account URL.',
+              labelText: 'Instagram URL',
+              controller: controller.instagramURLController.value,
+            ),
+            const SizedBox(height: 25),
+            CustomTextInputField(
+              questionText: 'Enter your X Account URL.',
+              labelText: 'X URL',
+              controller: controller.xURLController.value,
+            ),
+            const SizedBox(height: 25),
+            CustomTextInputField(
+              questionText: 'Enter your LinkedIn Account URL.',
+              labelText: 'LinkedIn URL',
+              controller: controller.linkedInURLController.value,
+            ),
+            const SizedBox(height: 25),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: controller.previousPage,
+                    child: const Text('Back'),
+                  ),
+                  ElevatedButton(
+                    onPressed: controller.nextPage,
+                    child: const Text('Next'),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 20),
-        PdfUploadWidget(
-          instructionText: 'Upload your return air ticket',
-          controller: returnAirTicketController,
-          questionText: 'Return Air Ticket',
-        ),
-        const SizedBox(height: 25),
-        PdfUploadWidget(
-          instructionText: 'Upload your accommodation booking confirmation',
-          controller: accommodationPlaceDocumentController,
-          questionText: 'Accommodation Booking Confirmation',
-        ),
-        const SizedBox(height: 25),
-        CustomDropdownField(
-          questionText: 'Have you visited Sri Lanka before?',
-          labelText: 'Select',
-          items: const ['Yes', 'No']
-              .map((element) => Tuple2(element, element))
-              .toList(),
-          onChanged: (String? newValue) {
-            sectionController.hasVisitedBeforeController.text = newValue!;
-          },
-        ),
-        const SizedBox(height: 30),
-        CustomDatePickerField(
-          isRequired: true,
-          questionText: 'If yes when was it?',
-          labelText: 'Last visited date',
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1900),
-          lastDate: DateTime.now(),
-          controller: sectionController.lastVisitedDateController,
-        ),
-        const SizedBox(height: 25),
-        CustomTextInputField(
-          questionText: 'Enter your Facebook Account URL.',
-          labelText: 'Facebook URL',
-          controller: sectionController.facebookURLController,
-        ),
-        const SizedBox(height: 25),
-        CustomTextInputField(
-          questionText: 'Enter your Instagram Account URL.',
-          labelText: 'Instagram URL',
-          controller: sectionController.instagramURLController,
-        ),
-        const SizedBox(height: 25),
-        CustomTextInputField(
-          questionText: 'Enter your X Account URL.',
-          labelText: 'X URL',
-          controller: sectionController.xURLController,
-        ),
-        const SizedBox(height: 25),
-        CustomTextInputField(
-          questionText: 'Enter your LinkedIn Account URL.',
-          labelText: 'LinkedIn URL',
-          controller: sectionController.linkedInURLController,
-        ),
-      ],
+      ),
     );
   }
 }
