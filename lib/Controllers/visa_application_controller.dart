@@ -50,7 +50,7 @@ class VisaApplicationController extends GetxController {
   List<TravelledCountry> travelHistory = [];
 
   void nextPage() {
-    if (_cPage < 3) {
+    if (_cPage < 4) {
       _cPage++;
       pageController.animateToPage(_cPage,
           duration: Durations.short3, curve: Curves.linear);
@@ -115,7 +115,6 @@ class VisaApplicationController extends GetxController {
     if(validationError != null){
       Get.snackbar("Error", validationError);
       return;
-
     }
     DateTime? passportExpiryDate = _parseDate(
         passportExpiryDateController.text);

@@ -34,13 +34,7 @@ class FormAppBar extends SliverPersistentHeaderDelegate {
             ),
             const Padding(
               padding: EdgeInsets.all(8.0),
-              // child: AppBar(
-              //   title: Text("Profile", style: TextStyle(color: Colors.white),),
-              //
-              // ),
             ),
-            // shrinkOffset < maxExtent/4 ?FormAppbarBottom()
-            //     : const SizedBox(),
           ],
         ));
   }

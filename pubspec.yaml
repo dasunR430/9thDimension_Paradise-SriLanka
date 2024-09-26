@@ -51,6 +51,8 @@ dependencies:
   file_picker: ^5.2.2
   country_picker: ^2.0.26
   tuple: ^2.0.2
+  flutter_toggle_tab: ^1.4.1
+  popover: ^0.3.0+1
 
 
 
@@ -79,6 +81,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/
+     - assets/images/bot_images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
