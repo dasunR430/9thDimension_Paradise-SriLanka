@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:paradise_sri_lanka/Controllers/applicants_controller.dart';
+import 'package:paradise_sri_lanka/Controllers/question_screen_controller.dart';
 import 'package:tuple/tuple.dart';
-import '../../Controllers/visa_type_selection_controller.dart';
 import 'Widgets/question_page.dart';
 
 class VisaTypeSelection extends StatelessWidget {
@@ -99,16 +98,4 @@ class VisaTypeSelection extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  Get.put(ApplicantController());
-  runApp(GetMaterialApp(
-    home: VisaTypeSelection(),
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-    ),
-  ));
 }

@@ -165,9 +165,9 @@ class QuestionPage extends StatelessWidget {
       children: [
         ElevatedButton(
           style: ButtonStyle(
-            fixedSize: MaterialStateProperty.all<Size>(const Size(319, 54)),
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-            side: MaterialStateProperty.all<BorderSide>(
+            fixedSize: WidgetStateProperty.all<Size>(const Size(319, 54)),
+            backgroundColor: WidgetStateProperty.all<Color>(Colors.blue),
+            side: WidgetStateProperty.all<BorderSide>(
               const BorderSide(
                 color: Colors.blue,
                 width: 1.0,
@@ -182,9 +182,9 @@ class QuestionPage extends StatelessWidget {
         if (showBack)
           ElevatedButton(
             style: ButtonStyle(
-              fixedSize: MaterialStateProperty.all<Size>(const Size(319, 54)),
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              side: MaterialStateProperty.all<BorderSide>(
+              fixedSize: WidgetStateProperty.all<Size>(const Size(319, 54)),
+              backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              side: WidgetStateProperty.all<BorderSide>(
                 const BorderSide(
                   color: Colors.blue,
                   width: 1.0,

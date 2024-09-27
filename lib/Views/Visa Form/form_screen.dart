@@ -3,9 +3,8 @@ import 'package:get/get.dart';
 import 'package:paradise_sri_lanka/Controllers/image_select_controller.dart';
 import 'package:paradise_sri_lanka/Controllers/image_upload_controller.dart';
 import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart';
-import 'package:paradise_sri_lanka/Controllers/applicants_controller.dart';
-import 'Widgets/appbar.dart';
 import 'Widgets/bottompanel.dart';
+import 'Widgets/form_appbar.dart';
 
 class FormScreen extends StatelessWidget {
   String type;

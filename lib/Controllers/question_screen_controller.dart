@@ -7,8 +7,7 @@ import '../Services/API/database.dart';
 import 'applicants_controller.dart';
 
 class VisaTypeSelectionController extends GetxController {
-  final ApplicantController applicantsController =
-      Get.find<ApplicantController>();
+  final ApplicantController applicantsController = Get.put(ApplicantController());
 
   RxInt currentPage = 0.obs;
   int _cPage = 0;

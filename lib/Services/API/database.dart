@@ -4,6 +4,7 @@ class ParadiseDataBase {
   static const String _baseurl = 'http://10.10.13.11:3000/api/data';
 
   static List<VisaType> _visaTypes = [];
+
   static Future<List<VisaType>?> get visaTypes async {
     if (_visaTypes.isNotEmpty) {
       return _visaTypes;

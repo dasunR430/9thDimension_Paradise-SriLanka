@@ -10,7 +10,7 @@ import 'package:path/path.dart';
 
 class VisaApplicationController extends GetxController {
   final ApplicantController applicantsController =
-      Get.find<ApplicantController>();
+      Get.put(ApplicantController());
   final PageController pageController = PageController();
   final ScrollController scrollController = ScrollController();
   var currentPage = 0.obs;

@@ -13,7 +13,7 @@ import 'Views/Applicants Screen/applicants_screen.dart';
 import 'Views/Authentication/Login/login_screen.dart';
 import 'Views/ChatBot/ChatsListScreen/chats_list_screen.dart';
 import 'Views/Visa Portal/visa_portal_screen.dart';
-import 'Views/Visa Type Selection/question_screen.dart';
+import 'Views/Visa Type Selection/visa_type_selection_screen.dart';
 
 
 class App extends StatelessWidget {
@@ -31,7 +31,7 @@ class App extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeNotifier.themeMode,
       debugShowCheckedModeBanner: false,
-      home: ChatListScreen(),
+      home: VisaPortalScreen(),
     );
   }
 }
