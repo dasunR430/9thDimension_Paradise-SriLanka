@@ -142,8 +142,9 @@ class SummaryScreen extends StatelessWidget {
   final ApplicantController applicantController =
       Get.find<ApplicantController>();
   final VisaApplicant applicant;
+  final String applicantType;
 
-  SummaryScreen({super.key, required this.applicant});
+  SummaryScreen({super.key, required this.applicant, required this.applicantType});
 
   @override
   Widget build(BuildContext context) {
@@ -158,8 +159,8 @@ class SummaryScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Main Applicant',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(applicantType=="Main" ? 'Main Applicant':'Other Applicant}',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             SummaryCard(applicant: applicant, travelHistory: travelHistory),
             const SizedBox(height: 20),
@@ -281,6 +282,7 @@ class TravelHistoryCard extends StatelessWidget {
               travelledCountry.attachment!,
               'No passport bio page uploaded.',
             ),
+          const SizedBox(height: 10),
         ],
       ),
     );

@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:paradise_sri_lanka/Controllers/applicants_controller.dart';
 import 'package:paradise_sri_lanka/Models/visa_applicant.dart';
-import 'package:path/path.dart';
 import 'visa_application_controller.dart';
 
 class ImageSelectController extends GetxController {
@@ -23,43 +22,39 @@ class ImageSelectController extends GetxController {
   }
 
   Future<void> pickImage(VisaApplicationController sectionController) async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+        await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       File imageF = File(pickedFile.path);
       imageFile.value = imageF; // Update the image file immediately
       sectionController.faceImage.value.setImageFile(imageF);
 
-      sectionController.faceImage.value.setImageFile(imageF);
-      applicantsController.updateMainApplicant(
-        applicantsController.applicantEntity.mainVisaApplicant?.copyWith(
-              passportPhotoURL: imageF.path,
-            ) ??
-            VisaApplicant(
-              passportPhotoURL: imageF.path,
-              passportBioPageURL: '',
-              // Initialize other required fields
-              passportNumber: '',
-              passportExpiryDate: DateTime.now(),
-              surname: '',
-              givenNames: '',
-              dateOfBirth: DateTime.now(),
-              placeOfBirth: '',
-              nationality: '',
-              gender: '',
-              phoneNumberCountryCode: '',
-              phoneNumber: '',
-              whatsAppNumberCountryCode: '',
-              whatsAppNumber: '',
-              homeAddress: '',
-              email: '',
-              emergencyContactPersonName: '',
-              emergencyContactPersonPhoneCountryCode: '',
-              emergencyContactPersonPhone: '',
-            ),
-      );
+      // Determine if the applicant is main or other
+      bool isMainApplicant = applicantsController.applicantType == "Main";
+
+      if (isMainApplicant) {
+        applicantsController.updateMainApplicant(
+          applicantsController.applicantEntity.mainVisaApplicant!.copyWith(
+                passportPhotoURL: imageF.path,
+              )
+        );
+      } else {
+
+        final currentApplicant = applicantsController
+            .applicantEntity.entityMembers?.lastOrNull?.applicant;
+        if (currentApplicant != null) {
+          VisaApplicant updatedApplicant = currentApplicant.copyWith(
+            passportPhotoURL: imageFile.value!.path,
+          );
+          currentApplicant.update(updatedApplicant);
+        } else {
+
+          _showError('current applicant found');
+        }
+        }
+
     } else {
       _showError('No image selected');
     }
@@ -74,5 +69,27 @@ class ImageSelectController extends GetxController {
     sectionController.passportImage.value.setImageBytes(null);
     sectionController.faceImage.value.setImageFile(null);
     sectionController.faceImage.value.setImageBytes(null);
+
+    // Determine if the applicant is main or other
+    bool isMainApplicant = applicantsController.applicantType == "Main";
+
+    if (isMainApplicant) {
+      final currentApplicant =
+          applicantsController.applicantEntity.mainVisaApplicant;
+      if (currentApplicant != null) {
+        applicantsController.updateMainApplicant(
+          currentApplicant.copyWith(passportPhotoURL: null),
+        );
+      }
+    } else {
+      // For other applicants, update the current applicant in the entity members list
+      final currentApplicant = applicantsController
+          .applicantEntity.entityMembers?.lastOrNull?.applicant;
+      if (currentApplicant != null) {
+        VisaApplicant updatedApplicant =
+            currentApplicant.copyWith(passportPhotoURL: null);
+        currentApplicant.update(updatedApplicant);
+      }
+    }
   }
 }

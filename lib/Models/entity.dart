@@ -96,15 +96,18 @@ class ApplicantEntity {
     }
   }
 
-  void addEntityMember(VisaApplicant visaApplicant){
-    EntityMember entityMember = EntityMember(applicant: visaApplicant, relation: "Temp");
+  void addEntityMember(VisaApplicant visaApplicant) {
+    EntityMember entityMember =
+        EntityMember(applicant: visaApplicant, relation: "Temp");
     entityMembers!.add(entityMember);
   }
+
   bool findRemoval(VisaApplicant visaApplicant, String email) {
     return visaApplicant.email == email;
   }
 
   void removeEntityMember(VisaApplicant visaApplicant) {
-    entityMembers!.removeWhere((member) => findRemoval(member.applicant, visaApplicant.email));
+    entityMembers!.removeWhere(
+        (member) => findRemoval(member.applicant, visaApplicant.email));
   }
 }

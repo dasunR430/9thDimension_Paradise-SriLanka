@@ -6,8 +6,9 @@ import '../../Visa Form/Sections/travel_history.dart';
 class VisaApplicantCard extends StatelessWidget {
   final VisaApplicant? applicant;
   final VoidCallback? onRemove;
+  final String applicantType;
 
-  const VisaApplicantCard({super.key, required this.applicant, this.onRemove});
+  const VisaApplicantCard({super.key, required this.applicant, this.onRemove, required this.applicantType});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class VisaApplicantCard extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.info, color: Colors.blue),
                 onPressed: () {
-                  Get.to(() => SummaryScreen(applicant: applicant!));
+                  Get.to(() => SummaryScreen(applicant: applicant!,applicantType: applicantType,));
                 },
               ),
             ],
