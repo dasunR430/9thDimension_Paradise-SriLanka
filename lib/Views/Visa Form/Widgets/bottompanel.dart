@@ -12,7 +12,11 @@ class BottomPanel extends StatelessWidget {
   final String applicantType;
   final String visaSelectionType;
 
-  const BottomPanel({super.key, required this.controller,required this.applicantType,required this.visaSelectionType});
+  const BottomPanel(
+      {super.key,
+      required this.controller,
+      required this.applicantType,
+      required this.visaSelectionType});
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +34,16 @@ class BottomPanel extends StatelessWidget {
             children: [
               PassportAndPhotoScreen(
                 controller: controller,
+                applicantType: applicantType,
+                visaSelectionType: visaSelectionType,
               ),
               PersonalDetailsScreen(controller: controller),
               ContactDetailsScreen(controller: controller),
               SupportingDocumentsPage(controller: controller),
-              TravelHistoryScreen(controller: controller, applicantType:applicantType,visaSelectionType:visaSelectionType),
+              TravelHistoryScreen(
+                  controller: controller,
+                  applicantType: applicantType,
+                  visaSelectionType: visaSelectionType),
             ],
           ),
         ),

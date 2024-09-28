@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart';
+import 'package:paradise_sri_lanka/Views/Visa%20Portal/visa_portal_screen.dart';
 
 import '../../Controllers/applicants_controller.dart';
 import 'Widgets/add_applicant_button.dart';
@@ -49,6 +50,7 @@ class ApplicantsScreen extends StatelessWidget {
                                   // Optionally, add a method to remove main applicant
                                   controller.removeMainApplicant();
                                 },
+                                applicantType: "Main",
                               )
                             : AddApplicantButton(
                                 onPressed: () {
@@ -89,6 +91,7 @@ class ApplicantsScreen extends StatelessWidget {
                                   applicant: applicant.applicant,
                                   onRemove: () =>
                                       controller.removeApplicant(applicant),
+                                  applicantType: "Other",
                                 ),
                               )
                               .toList(),
@@ -99,6 +102,49 @@ class ApplicantsScreen extends StatelessWidget {
                           label: "+ Add Other Applicant",
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        // Add your logic here to save the data into the database
+                        if (controller.applicantEntity.mainVisaApplicant ==
+                            null) {
+                          // Show an error message if the main applicant is not set
+                          Get.snackbar('Error',
+                              'Main applicant is required before submitting.');
+                          return;
+                        }
+
+                        if (controller.applicantEntity.entityMembers == null ||
+                            controller.applicantEntity.entityMembers!.isEmpty) {
+                          // Show an error message if there are no other applicants
+                          Get.snackbar('Error',
+                              'At least one other applicant is required before submitting.');
+                          return;
+                        }
+
+                        await controller.saveApplicantToDatabase();
+                        Get.to(()=>VisaPortalScreen());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 5,
+                      ),
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],

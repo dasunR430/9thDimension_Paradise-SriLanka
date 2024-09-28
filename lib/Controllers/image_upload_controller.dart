@@ -73,8 +73,8 @@ class ImageUploadController extends GetxController {
           passportData!['given_names'] ?? '';
       sectionController.birthdayController.value.text =
           formatDateOfBirth(passportData!['date_of_birth'] ?? '');
-      sectionController.placeOfBirthController.value.text =
-          passportData!['place_of_birth'] ?? '';
+      // sectionController.placeOfBirthController.value.text =
+      //     passportData!['place_of_birth'] ?? '';
       String gen = passportData!['gender'] ?? '';
       sectionController.genderController.value.text =
           (gen == "M" || gen == "F") ? gen : "";
@@ -90,34 +90,29 @@ class ImageUploadController extends GetxController {
       if (imageFile.value != null) {
         // Assuming you have a method to upload the file and get a URL
         // For demonstration, we'll set the local path
-        applicantsController.updateMainApplicant(
-          applicantsController.applicantEntity.mainVisaApplicant?.copyWith(
-                passportPhotoURL: imageFile.value!.path,
-                passportBioPageURL: passportData!['passport_biopage_url'] ?? '',
-              ) ??
-              VisaApplicant(
-                passportPhotoURL: imageFile.value!.path,
-                passportBioPageURL: passportData!['passport_biopage_url'] ?? '',
-                // Initialize other required fields
-                passportNumber: '',
-                passportExpiryDate: DateTime.now(),
-                surname: '',
-                givenNames: '',
-                dateOfBirth: DateTime.now(),
-                placeOfBirth: '',
-                nationality: '',
-                gender: '',
-                phoneNumberCountryCode: '',
-                phoneNumber: '',
-                whatsAppNumberCountryCode: '',
-                whatsAppNumber: '',
-                homeAddress: '',
-                email: '',
-                emergencyContactPersonName: '',
-                emergencyContactPersonPhoneCountryCode: '',
-                emergencyContactPersonPhone: '',
-              ),
-        );
+        bool isMainApplicant = applicantsController.applicantType == "Main";
+        if (isMainApplicant) {
+          applicantsController.updateMainApplicant(
+            applicantsController.applicantEntity.mainVisaApplicant!.copyWith(
+                  passportPhotoURL: imageFile.value!.path,
+                  passportBioPageURL:
+                      passportData!['passport_biopage_url'] )
+
+          );
+        } else {
+          final currentApplicant = applicantsController
+              .applicantEntity.entityMembers?.lastOrNull?.applicant;
+          if (currentApplicant != null) {
+            VisaApplicant updatedApplicant = currentApplicant.copyWith(
+              passportPhotoURL: imageFile.value!.path,
+              passportBioPageURL: passportData!['passport_biopage_url'] ?? '',
+            );
+            currentApplicant.update(updatedApplicant);
+          } else {
+
+            _showError('current applicant found');
+          }
+        }
       }
     }
   }
@@ -188,35 +183,34 @@ class ImageUploadController extends GetxController {
             await uint8ListToFile(extractedFaceBytes!, 'extracted_face.png');
         sectionController.faceImage.value.setImageFile(faceFile);
         sectionController.faceImage.value.setImageBytes(extractedFaceBytes);
-        // Update ApplicantController with the face image path
-        applicantsController.updateMainApplicant(
-          applicantsController.applicantEntity.mainVisaApplicant?.copyWith(
-                faceImagePath: faceFile.path,
-              ) ??
-              VisaApplicant(
-                // Initialize with faceImagePath and other required fields
-                passportPhotoURL: '',
-                passportBioPageURL: '',
-                faceImagePath: faceFile.path,
-                passportNumber: '',
-                passportExpiryDate: DateTime.now(),
-                surname: '',
-                givenNames: '',
-                dateOfBirth: DateTime.now(),
-                placeOfBirth: '',
-                nationality: '',
-                gender: '',
-                phoneNumberCountryCode: '',
-                phoneNumber: '',
-                whatsAppNumberCountryCode: '',
-                whatsAppNumber: '',
-                homeAddress: '',
-                email: '',
-                emergencyContactPersonName: '',
-                emergencyContactPersonPhoneCountryCode: '',
-                emergencyContactPersonPhone: '',
-              ),
-        );
+
+        // Determine if the applicant is main or other
+        bool isMainApplicant = applicantsController.applicantType == "Main";
+
+        if (isMainApplicant) {
+          applicantsController.updateMainApplicant(
+            applicantsController.applicantEntity.mainVisaApplicant!.copyWith(
+                  passportPhotoURL: faceFile.path,
+                  passportBioPageURL: imageF.path,
+                )
+          );
+          //applicantsController.applicantEntity.entityMembers?.lastOrNull.relation = con;
+        } else {
+          final currentApplicant = applicantsController
+              .applicantEntity.entityMembers?.lastOrNull?.applicant;
+          if (currentApplicant != null) {
+            VisaApplicant updatedApplicant = currentApplicant.copyWith(
+              passportPhotoURL: imageFile.value!.path,
+              passportBioPageURL: passportData!['passport_biopage_url'] ?? '',
+            );
+            currentApplicant.update(updatedApplicant);
+          } else {
+
+            _showError('current applicant found');
+          }
+
+        }
+
         passportPhotoController.imageFile.value =
             faceFile; // Update the face image file
       }
@@ -237,5 +231,32 @@ class ImageUploadController extends GetxController {
     sectionController.passportImage.value.setImageBytes(null);
     sectionController.faceImage.value.setImageFile(null);
     sectionController.faceImage.value.setImageBytes(null);
+
+    // Determine if the applicant is main or other
+    bool isMainApplicant = applicantsController.applicantType == "Main";
+
+    if (isMainApplicant) {
+      final currentApplicant =
+          applicantsController.applicantEntity.mainVisaApplicant;
+      if (currentApplicant != null) {
+        applicantsController.updateMainApplicant(
+          currentApplicant.copyWith(
+            passportPhotoURL: null,
+            passportBioPageURL: null,
+          ),
+        );
+      }
+    } else {
+      // For other applicants, update the current applicant in the entity members list
+      final currentApplicant = applicantsController
+          .applicantEntity.entityMembers?.lastOrNull?.applicant;
+      if (currentApplicant != null) {
+        VisaApplicant updatedApplicant = currentApplicant.copyWith(
+          passportPhotoURL: null,
+          passportBioPageURL: null,
+        );
+        currentApplicant.update(updatedApplicant);
+      }
+    }
   }
 }

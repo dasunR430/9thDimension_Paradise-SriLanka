@@ -79,13 +79,13 @@ class PersonalDetailsScreen extends StatelessWidget {
             const SizedBox(height: 25),
 
             // Place of Birth Field
-            Obx(() => CustomTextInputField(
+            /*Obx(() => CustomTextInputField(
                   isRequired: true,
                   questionText: 'Where were you born?',
                   labelText: 'Place of Birth',
                   controller: controller.placeOfBirthController.value,
                 )),
-            const SizedBox(height: 25),
+            const SizedBox(height: 25),*/
 
             // Gender Dropdown
             Obx(() => CustomDropdownField(
@@ -136,6 +136,7 @@ class PersonalDetailsScreen extends StatelessWidget {
 
             // Occupation Field
             Obx(() => CustomTextInputField(
+                  isRequired: true,
                   questionText: 'What is your occupation?',
                   labelText: 'Occupation',
                   controller: controller.occupationController.value,
@@ -144,6 +145,7 @@ class PersonalDetailsScreen extends StatelessWidget {
 
             // Marital Status Dropdown
             Obx(() => CustomDropdownField(
+                  isRequired: true,
                   questionText: 'What is your Marital Status?',
                   labelText: 'Marital Status',
                   items: const ['Single', 'Married', 'Divorced', 'Widowed']
@@ -152,6 +154,16 @@ class PersonalDetailsScreen extends StatelessWidget {
                   controller: controller.maritalStatusController.value,
                 )),
             const SizedBox(height: 25),
+
+            if(controller.applicantsController.applicantType!="Main")
+              Obx(() => CustomTextInputField(
+                isRequired: true,
+                questionText: 'What is your relationship to the main applicant?',
+                labelText: 'Relationship',
+                controller: controller.relationshipController.value,
+              )),
+            const SizedBox(height: 25),
+
 
             // Next Button with Validation
 

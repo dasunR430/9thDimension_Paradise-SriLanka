@@ -55,7 +55,6 @@ class VisaTypeSelectionController extends GetxController {
     _getVisaTypes();
     super.onInit();
   }
-
   @override
   void onClose() {
     // Dispose controllers when not needed
@@ -92,10 +91,11 @@ class VisaTypeSelectionController extends GetxController {
       }
     } else if (_cPage == pages - 1) {
       if (_validatePage()) {
-        String countryId = countryIdController.text;
-        String visaTypeId = visaSubCategoryController.text;
-        DateTime? startDate = tryParseDate(arrivalDateController.text);
-        String travelType = travelTypeController.text;
+        String countryId = countryIdController.value.text;
+        String visaTypeId = visaSubCategoryController.value.text;
+        DateTime? startDate = tryParseDate(arrivalDateController.value.text);
+        String travelType = travelTypeController.value.text;
+        //DateTime? endDate = tryParseDate(departureDateController.value.text);
 
         if (startDate == null) {
           Get.snackbar(

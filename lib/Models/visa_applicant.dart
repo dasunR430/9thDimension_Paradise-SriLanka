@@ -1,7 +1,7 @@
 import 'package:paradise_sri_lanka/Models/travelled_country.dart';
 
 class VisaApplicant {
-  String? applicantId;
+  int? applicantId;
   String passportBioPageURL;
   String passportPhotoURL;
   String passportNumber;
@@ -34,9 +34,8 @@ class VisaApplicant {
   List<TravelledCountry>? travelHistory;
 
   // New Fields for Images
-  String? faceImagePath;
-
   VisaApplicant({
+    required this.applicantId,
     required this.passportBioPageURL,
     required this.passportPhotoURL,
     required this.passportNumber,
@@ -47,8 +46,8 @@ class VisaApplicant {
     required this.placeOfBirth,
     required this.nationality,
     required this.gender,
-    this.occupation,
-    this.maritalStatus,
+    required this.occupation,
+    required this.maritalStatus,
     required this.phoneNumberCountryCode,
     required this.phoneNumber,
     required this.whatsAppNumberCountryCode,
@@ -58,20 +57,20 @@ class VisaApplicant {
     required this.emergencyContactPersonName,
     required this.emergencyContactPersonPhoneCountryCode,
     required this.emergencyContactPersonPhone,
-    this.accommodationPlaceDocumentURL,
-    this.returnAirTicketURL,
-    this.hasVisitedBefore,
-    this.lastVisitedDate,
-    this.facebookURL,
-    this.instagramURL,
-    this.xURL,
-    this.linkedInURL,
-    this.travelHistory,
-    this.faceImagePath, // Initialize the new field
+    required this.accommodationPlaceDocumentURL,
+    required this.returnAirTicketURL,
+    required this.hasVisitedBefore,
+    required this.lastVisitedDate,
+    required this.facebookURL,
+    required this.instagramURL,
+    required this.xURL,
+    required this.linkedInURL,
+    required this.travelHistory,
   });
 
   // CopyWith method to facilitate updates
   VisaApplicant copyWith({
+    int? applicantId,
     String? passportBioPageURL,
     String? passportPhotoURL,
     String? passportNumber,
@@ -102,9 +101,9 @@ class VisaApplicant {
     String? xURL,
     String? linkedInURL,
     List<TravelledCountry>? travelHistory,
-    String? faceImagePath,
   }) {
     return VisaApplicant(
+      applicantId: applicantId ?? this.applicantId,
       passportBioPageURL: passportBioPageURL ?? this.passportBioPageURL,
       passportPhotoURL: passportPhotoURL ?? this.passportPhotoURL,
       passportNumber: passportNumber ?? this.passportNumber,
@@ -142,7 +141,6 @@ class VisaApplicant {
       xURL: xURL ?? this.xURL,
       linkedInURL: linkedInURL ?? this.linkedInURL,
       travelHistory: travelHistory ?? this.travelHistory,
-      faceImagePath: faceImagePath ?? this.faceImagePath,
     );
   }
 
@@ -180,13 +178,13 @@ class VisaApplicant {
       'xURL': xURL,
       'linkedInURL': linkedInURL,
       'travelHistory': travelHistory?.map((travel) => travel.toMap()).toList(),
-      'faceImagePath': faceImagePath, // Include the new field
     };
   }
 
   // Create a VisaApplicant object from a map (for retrieving from a database)
   factory VisaApplicant.fromMap(Map<String, dynamic> map) {
     return VisaApplicant(
+      applicantId: map['applicantId'],
       passportBioPageURL: map['passportBioPageURL'],
       passportPhotoURL: map['passportPhotoURL'],
       passportNumber: map['passportNumber'],
@@ -223,7 +221,6 @@ class VisaApplicant {
           ? List<TravelledCountry>.from(map['travelHistory']
               .map((item) => TravelledCountry.fromMap(item)))
           : null,
-      faceImagePath: map['faceImagePath'],
     );
   }
 
@@ -283,7 +280,6 @@ class VisaApplicant {
     xURL = updatedApplicant.xURL;
     linkedInURL = updatedApplicant.linkedInURL;
     travelHistory = updatedApplicant.travelHistory;
-    faceImagePath = updatedApplicant.faceImagePath;
   }
 
   // Delete a VisaApplicant object by resetting its values
@@ -318,6 +314,5 @@ class VisaApplicant {
     xURL = null;
     linkedInURL = null;
     travelHistory = null;
-    faceImagePath = null;
   }
 }
