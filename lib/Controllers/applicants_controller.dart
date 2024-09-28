@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart';
 import 'package:paradise_sri_lanka/Models/entity.dart';
 import 'package:paradise_sri_lanka/Models/travelled_country.dart';
 import 'package:paradise_sri_lanka/Models/visa_applicant.dart';
@@ -6,6 +7,7 @@ import 'package:paradise_sri_lanka/Models/entity_member.dart';
 import 'package:paradise_sri_lanka/Services/API/database.dart';
 import 'package:paradise_sri_lanka/Views/Applicants%20Screen/applicants_screen.dart';
 import 'package:paradise_sri_lanka/Views/Visa%20Form/form_screen.dart';
+import 'package:paradise_sri_lanka/Views/Visa%20Portal/visa_portal_screen.dart';
 
 class ApplicantController extends GetxController {
   late final Rx<ApplicantEntity> _applicantEntity;
@@ -30,17 +32,23 @@ class ApplicantController extends GetxController {
   void _initializeApplicantEntity() {
     try {
       _applicantEntity = ApplicantEntity(
-        countryId: 'SL',
-        visaTypeId: 'TOURIST',
+        countryId: 'CAN',
+        visaTypeId: 'tourist_30',
         startDate: DateTime.now(),
-        travelHistory: [],
+        addressOfStay: '', // Ensure this is an empty string, not null
+        cityOfStay: '',
+        zipOfStay: '',
+        travelHistory: [], 
       ).obs;
     } catch (e) {
       _applicantEntity = ApplicantEntity(
-        countryId: 'SL',
-        visaTypeId: 'TOURIST',
+        countryId: 'CAN',
+        visaTypeId: 'tourist_30',
         startDate: DateTime.now(),
-        travelHistory: [],
+        addressOfStay: '',
+        cityOfStay: '',
+        zipOfStay: '',
+        travelHistory: [], 
       ).obs;
     }
   }
@@ -60,9 +68,42 @@ class ApplicantController extends GetxController {
     if (applicantEntity.mainVisaApplicant != null) {
       //
     } else {
+      applicantEntity.mainVisaApplicant =
+          VisaApplicant(
+            applicantId: 1,
+            passportPhotoURL: '',
+            passportBioPageURL: '',
+            passportNumber: '',
+            passportExpiryDate: DateTime.now(),
+            surname: '',
+            givenNames: '',
+            dateOfBirth: DateTime.now(),
+            placeOfBirth: '',
+            nationality: '',
+            gender: '',
+            occupation: '',
+            maritalStatus: '',
+            phoneNumberCountryCode: '',
+            phoneNumber: '',
+            whatsAppNumberCountryCode: '',
+            whatsAppNumber: '',
+            homeAddress: '',
+            email: '',
+            emergencyContactPersonName: '',
+            emergencyContactPersonPhoneCountryCode: '',
+            emergencyContactPersonPhone: '',
+            accommodationPlaceDocumentURL: '',
+            returnAirTicketURL: '',
+            hasVisitedBefore: null,
+            lastVisitedDate: null,
+            facebookURL: '',
+            instagramURL: '',
+            xURL: '',
+            linkedInURL: '',
+            travelHistory: [],
+          );
       //
       Get.off(() => FormScreen("Main", "Group"));
-
     }
   }
 
@@ -71,15 +112,50 @@ class ApplicantController extends GetxController {
     _applicantEntity.update((val) {
       val?.mainVisaApplicant = null;
     });
-    Get.to(()=>ApplicantsScreen());
+    Get.to(() => const ApplicantsScreen());
   }
 
   // Method to update other applicants
   void addOtherApplicant() {
     if (applicantEntity.mainVisaApplicant != null) {
-      Get.off(() => FormScreen("Other", "Group"));
-    }else{
-      Get.snackbar("Invalid Route", "Main applicant should be added way before adding other applicants");
+      applicantEntity.addEntityMember(
+          VisaApplicant(
+            applicantId: 1,
+            passportPhotoURL: '',
+            passportBioPageURL: '',
+            passportNumber: '',
+            passportExpiryDate: DateTime.now(),
+            surname: '',
+            givenNames: '',
+            dateOfBirth: DateTime.now(),
+            placeOfBirth: '',
+            nationality: '',
+            gender: '',
+            occupation: '',
+            maritalStatus: '',
+            phoneNumberCountryCode: '',
+            phoneNumber: '',
+            whatsAppNumberCountryCode: '',
+            whatsAppNumber: '',
+            homeAddress: '',
+            email: '',
+            emergencyContactPersonName: '',
+            emergencyContactPersonPhoneCountryCode: '',
+            emergencyContactPersonPhone: '',
+            accommodationPlaceDocumentURL: '',
+            returnAirTicketURL: '',
+            hasVisitedBefore: null,
+            lastVisitedDate: null,
+            facebookURL: '',
+            instagramURL: '',
+            xURL: '',
+            linkedInURL: '',
+            travelHistory: [],
+          ));
+          Get.off(() => FormScreen("Other", "Group"));
+    } else {
+      Get.snackbar("Invalid Route",
+          "Main applicant should be added way before adding other applicants");
     }
   }
 
@@ -132,23 +208,31 @@ class ApplicantController extends GetxController {
   }
 
   // Method to finalize and save applicant data
-  void finalizeApplication(VisaApplicant applicant) {
-    if (_applicantType == "Main") {
-      // Update the main applicant in ApplicantController
+  void finalizeApplication(VisaApplicant applicant,VisaApplicationController controller) async {
+    if (_visaSelectionType == "Group") {
+      if (_applicantType == "Main") {
+        // Update the main applicant in ApplicantController
+        updateMainApplicant(applicant);
+
+        Get.snackbar('Success', 'Visa Applicant data saved successfully.');
+
+        Get.off(() => const ApplicantsScreen());
+      } else {
+        _applicantEntity.update((val) {
+          val?.entityMembers!.lastOrNull?.applicant.update(applicant);
+        });
+        _applicantEntity.update((val) {
+          val?.entityMembers!.lastOrNull?.relation = controller.relationshipController.value.text;
+        });
+        Get.off(() => const ApplicantsScreen());
+      }
+    } else {
       updateMainApplicant(applicant);
 
       Get.snackbar('Success', 'Visa Applicant data saved successfully.');
 
-      if (_visaSelectionType == "Individual") {
-        //Go to submit
-      } else {
-        Get.off(() => const ApplicantsScreen());
-      }
-    } else {
-      _applicantEntity.update((val) {
-        val?.addEntityMember(applicant);
-      });
-      Get.off(() => const ApplicantsScreen());
+      await saveApplicantToDatabase();
+      Get.off(() => const VisaPortalScreen());
     }
 
     // You can implement saving to a database or any other persistence layer here
@@ -156,9 +240,19 @@ class ApplicantController extends GetxController {
     // ParadiseDataBase.saveApplicant(_applicantEntity.value.toMap());
   }
 
+  Future<void> saveApplicantToDatabase() async {
+    try {
+      await ParadiseDataBase.saveApplicantToDatabase(applicantEntity);
+      Get.snackbar('Success', 'Applicant data saved to database successfully.');
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to save applicant data: $e');
+    }
+  }
+
   // Test data for main applicant
   void testAddMainApplicant() {
     updateMainApplicant(VisaApplicant(
+      applicantId: 1234567890,
       passportBioPageURL: 'https://example.com/bio.jpg',
       passportPhotoURL: 'https://example.com/photo.jpg',
       passportNumber: 'A1234567',
@@ -189,7 +283,6 @@ class ApplicantController extends GetxController {
       xURL: 'https://x.com/johndoe',
       linkedInURL: 'https://linkedin.com/in/johndoe',
       travelHistory: [],
-      faceImagePath: 'path/to/face/image.jpg',
     ));
   }
 

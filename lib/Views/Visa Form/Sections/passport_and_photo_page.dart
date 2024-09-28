@@ -7,13 +7,17 @@ import 'package:paradise_sri_lanka/Controllers/visa_application_controller.dart'
 import 'package:paradise_sri_lanka/Views/Visa%20Form/Widgets/image_select_widget.dart';
 import '../Widgets/image_upload_widget.dart';
 import '../Widgets/upload_progress_overlay.dart';
+import '../../../Controllers/applicants_controller.dart';
 
 class PassportAndPhotoScreen extends StatefulWidget {
   final VisaApplicationController controller;
-
+  final String applicantType;
+  final String visaSelectionType;
   const PassportAndPhotoScreen({
     super.key,
     required this.controller,
+    required this.applicantType,
+    required this.visaSelectionType,
   });
 
   @override
@@ -25,6 +29,8 @@ class _PassportAndPhotoScreenState extends State<PassportAndPhotoScreen> {
   late final ImageUploadController passportBioPageController;
   late final ImageSelectController passportPhotoController;
   final ErrorController errorController = ErrorController();
+  final ApplicantController applicantController =
+      Get.find<ApplicantController>();
 
   @override
   void initState() {
@@ -34,8 +40,14 @@ class _PassportAndPhotoScreenState extends State<PassportAndPhotoScreen> {
     passportPhotoController = Get.find<ImageSelectController>();
   }
 
+  void setup() {
+    applicantController.setApplicantType(widget.applicantType);
+    applicantController.setVisaSelectionType(widget.visaSelectionType);
+  }
+
   @override
   Widget build(BuildContext context) {
+    setup();
     return Stack(
       children: [
         SingleChildScrollView(
@@ -56,7 +68,7 @@ class _PassportAndPhotoScreenState extends State<PassportAndPhotoScreen> {
                   instructionText: 'Upload a photo of your Passport Bio Page',
                   controller: passportBioPageController,
                   questionText: 'Passport Bio Page',
-                  type: 'PassportBioPage',  
+                  type: 'PassportBioPage',
                   section: sectionController,
                   passportPhotoController: passportPhotoController,
                 ),

@@ -21,12 +21,13 @@ class VisaApplicationController extends GetxController {
   final surnameController = TextEditingController().obs;
   final otherNamesController = TextEditingController().obs;
   final birthdayController = TextEditingController().obs;
-  final placeOfBirthController = TextEditingController().obs;
+  //  final placeOfBirthController = TextEditingController().obs;
   final nationalityController = TextEditingController().obs;
   final genderController = TextEditingController().obs;
   final passportNumberController = TextEditingController().obs;
   final passportExpiryDateController = TextEditingController().obs;
   final occupationController = TextEditingController().obs;
+  final relationshipController = TextEditingController().obs;
   final maritalStatusController = TextEditingController().obs;
   final emergencyContactPersonNameController = TextEditingController().obs;
   final emergencyContactPersonPhoneCountryCodeController =
@@ -46,7 +47,6 @@ class VisaApplicationController extends GetxController {
   final emailController = TextEditingController().obs;
   final homeAddressController = TextEditingController().obs;
   final lastVisitedDate = TextEditingController().obs;
-
   final faceImage = ImageEditingController().obs;
   final passportImage = ImageEditingController().obs;
 
@@ -137,6 +137,8 @@ class VisaApplicationController extends GetxController {
       }
 
       final applicant = VisaApplicant(
+        applicantId:
+            applicantsController.applicantEntity.mainVisaApplicant?.applicantId,
         passportBioPageURL: passportBioPageURL,
         passportPhotoURL: passportPhotoURL,
         passportNumber: passportNumberController.value.text,
@@ -145,9 +147,11 @@ class VisaApplicationController extends GetxController {
         surname: surnameController.value.text,
         givenNames: otherNamesController.value.text,
         dateOfBirth: DateTime.parse(birthdayController.value.text),
-        placeOfBirth: placeOfBirthController.value.text,
+        placeOfBirth: nationalityController.value.text,
         nationality: nationalityController.value.text,
         gender: genderController.value.text,
+        occupation: occupationController.value.text,
+        maritalStatus: maritalStatusController.value.text,
         phoneNumberCountryCode: phoneNumberCountryCodeController.value.text,
         phoneNumber: phoneNumberController.value.text,
         whatsAppNumberCountryCode:
@@ -216,11 +220,15 @@ class VisaApplicationController extends GetxController {
       if (surnameController.value.text.isEmpty ||
           otherNamesController.value.text.isEmpty ||
           birthdayController.value.text.isEmpty ||
-          placeOfBirthController.value.text.isEmpty ||
+          //  placeOfBirthController.value.text.isEmpty ||
           genderController.value.text.isEmpty ||
           nationalityController.value.text.isEmpty ||
+          occupationController.value.text.isEmpty ||
+          maritalStatusController.value.text.isEmpty ||
           passportNumberController.value.text.isEmpty ||
-          passportExpiryDateController.value.text.isEmpty) {
+          passportExpiryDateController.value.text.isEmpty ||
+          (relationshipController.value.text.isEmpty && applicantsController.applicantType!="Main")
+      ) {
         Get.snackbar(
           'Validation Error',
           'Please fill all required fields.',
@@ -261,18 +269,17 @@ class VisaApplicationController extends GetxController {
       }
     } else if (currentPage.value == 4) {
       {
-        TravelledCountryController travelController =
-            Get.find<TravelledCountryController>();
-        if (travelController.travelledCountryList.isEmpty) {
+        Get.find<TravelledCountryController>();
+        /*if (travelController.travelledCountryList.isEmpty) {
           Get.snackbar("Empty Travel History",
               "මගෙන් මැරුම් නොකා ගිය තැනක් දාපන් ඔතෙන්ට");
           return;
-        }
+        }*/
         ApplicantController applicantController =
             Get.find<ApplicantController>();
         currentPage.value = 0;
         createVisaApplicant().then((applicant) {
-          applicantController.finalizeApplication(applicant);
+          applicantController.finalizeApplication(applicant,this);
         }).catchError((error) {
           // Handle the error (e.g., show an error message to the user)
         });
@@ -304,13 +311,6 @@ class VisaApplicationController extends GetxController {
 
         // Reset the TravelledCountryController
         Get.find<TravelledCountryController>().travelledCountryList.clear();
-
-        // Get image controllers
-        final passportImageController = Get.find<ImageUploadController>();
-        final profileImageController = Get.find<ImageSelectController>();
-        // Reset image controllers
-        passportImageController.resetImage();
-        profileImageController.resetImage();
 
         // Reset the current page to the initial page
         currentPage.value = 0;
@@ -362,7 +362,7 @@ class VisaApplicationController extends GetxController {
     surnameController.value.text = surname;
     otherNamesController.value.text = otherNames;
     birthdayController.value.text = birthday;
-    placeOfBirthController.value.text = placeOfBirth;
+    //  placeOfBirthController.value.text = nationality;
     nationalityController.value.text = nationality;
     genderController.value.text = gender;
     passportNumberController.value.text = passportNumber;
