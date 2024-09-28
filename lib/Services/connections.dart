@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class Connections {
-  static const String _baseUrl = 'http://13.51.159.48:5000';
+  static const String _baseUrl =
+      'http://13.51.159.48:5000'; // Server 'http://13.51.159.48:5000'; Local 'http://127.0.0.1:5000';
 
   Future<List<String>> getRecommendations(
       List<String> categories, List<String> bucketList) async {
@@ -90,7 +91,8 @@ class Connections {
       final jsonResponse = jsonDecode(response.body);
       return jsonResponse['response'];
     } else {
-      throw Exception('Failed to fetch accommodations');
+      throw Exception(
+          'The server is currently busy. Please try again in few seconds.');
     }
   }
 
