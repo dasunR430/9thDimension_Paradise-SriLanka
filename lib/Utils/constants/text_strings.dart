@@ -14,35 +14,32 @@ class ConstantTexts {
   //Auth Form Texts
   static const String firstName = "First Name";
   static const String lastName = "Last Name";
-  static const String email = "E-Mail";
+  static const String email = "Email";
   static const String password = "Password";
   static const String confirmPassword = "Confirm password";
   static const String newPassword = "New Password";
-  static const String username = "Username";
-  static const String phoneNo = "Phone Number";
-  static const String rememberMe = "Remember Me";
   static const String forgetPassword = "Forget Password";
-  static const String logIn = "Log In";
+  static const String doNotHaveAccount = "Don't have an account?";
+  static const String signIn = "Sign In";
   static const String createAccount = "Create Account";
   static const String orContinueWith = "Or Continue With";
   static const String iAgreeTo = "I agree to";
   static const String privacyPolicy = "Privacy Policy";
   static const String termsOfUse = "Terms of use";
   static const String verificationCode = "Verification Code";
-  static const String resendEmail = "Resend E-Mail";
-  static const String sendEmail = "Send E-Mail";
+  static const String resendEmail = "Resend Email";
+  static const String sendEmail = "Send Email";
   static const String continueText = "Continue";
 
 
   //Auth Headings Texts
-  static const String loginTitle = "Welcome back,";
-  static const String loginSubTitle = "Connecting communities, promoting healthy living.";
-  static const String registerTitle = "Let's get started,";
+  static const String loginTitle = "Welcome back!";
+  static const String registerTitle = "Create an Account and\nUnlock Exclusive Experiences";
   static const String registerSubTitle = "Register to buy and sell local organic produce effortlessly.";
   static const String forgetPasswordTitle = "Forget password";
-  static const String forgetPasswordSubTitle = "Don't worry, it happens! Enter your email address below, and we'll send you a password reset link.";
-  static const String changeYourPasswordTitle = "Password Reset Email Sent.";
-  static const String changeYourPasswordSubTitle = "Your Account Security is Our Priority! We've Sent You a Secure Link to Safely Change Your Password and Keep Your Account Protected.";
+  static const String forgetPasswordSubTitle = "Don't worry, it happens! Enter your email address below, and we'll send you the one-time-password (OTP).";
+  static const String changeYourPasswordTitle = "Password Reset OTP Sent.";
+  static const String changeYourPasswordSubTitle = "Your Account Security is Our Priority! We've Sent You a OTP to Safely Change Your Password and Keep Your Account Protected.";
   static const String verifyEmailTitle = "Verify your Email address!";
   static const String verifyEmailSubTitle = "Almost there! A verification link has been sent to your email address. Please verify your email to continue.";
   static const String emailNotReceivedMessage = "Didn't get the email? Check your junk/spam or resend it.";

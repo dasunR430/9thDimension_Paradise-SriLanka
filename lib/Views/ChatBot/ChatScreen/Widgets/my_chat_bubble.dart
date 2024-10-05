@@ -38,7 +38,7 @@ class MyChatBubble extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: Text(
-            "${chatMessage.dateTime.hour}:${chatMessage.dateTime.minute}",
+            "${chatMessage.dateTime.hour<10 ? "0": ""}${chatMessage.dateTime.hour}:${chatMessage.dateTime.minute<10 ? "0": ""}${chatMessage.dateTime.minute}",
             style: Theme.of(context)
                 .textTheme
                 .bodySmall

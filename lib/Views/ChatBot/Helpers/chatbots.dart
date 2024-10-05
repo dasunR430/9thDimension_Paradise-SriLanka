@@ -7,7 +7,7 @@ class ChatBots{
     'General': 'assets/images/bot_images/general.png',
     'Tour Agent': 'assets/images/bot_images/tour_agent.png',
     'Stay Specialist': 'assets/images/bot_images/stay_specialist.png',
-    'Trip Specialist': 'assets/images/bot_images/trip_specialist.png',
+    'Transport Specialist': 'assets/images/bot_images/transport_specialist.png',
     'Place Specialist': 'assets/images/bot_images/place_specialist.png',
     'Shop Specialist': 'assets/images/bot_images/shopping_specialist.png',
   };
@@ -16,7 +16,7 @@ class ChatBots{
     'General': Colors.red,
     'Tour Agent': Colors.blue,
     'Stay Specialist': Colors.green,
-    'Trip Specialist': Colors.grey,
+    'Transport Specialist': Colors.grey,
     'Place Specialist': Colors.purple,
     'Shop Specialist': Colors.orange,
   };

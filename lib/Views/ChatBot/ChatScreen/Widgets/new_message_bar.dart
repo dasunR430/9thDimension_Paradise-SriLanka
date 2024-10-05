@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:paradise_sri_lanka/Controllers/chatbot_screen_controller.dart';
+import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Controllers/chat_screen_controller.dart';
 import 'package:paradise_sri_lanka/Utils/helpers/helper_functions.dart';
 
 class NewMessageBar extends StatelessWidget {
@@ -40,11 +41,9 @@ class NewMessageBar extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
+            Obx(() =>!controller.isGenerating.value ?  InkWell(
               borderRadius: const BorderRadius.all(Radius.circular(50)),
-              onTap: () {
-                //send message
-              },
+              onTap: controller.onMessageSendPressed ,
               child: const Card(
                   elevation: 5,
                   shape: CircleBorder(),
@@ -56,7 +55,27 @@ class NewMessageBar extends StatelessWidget {
                       color: Colors.white,
                     ),
                   )),
-            ),
+            )
+              :
+            const InkWell(
+              borderRadius: BorderRadius.all(Radius.circular(50)),
+              onTap: null,
+              child: Card(
+                  elevation: 5,
+                  shape: CircleBorder(),
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  )),
+            ),)
           ],
         ),
       ),

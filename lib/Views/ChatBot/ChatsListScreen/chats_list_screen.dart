@@ -31,7 +31,7 @@ class ChatListScreen extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                  child: ListView.separated(
+                  child: Obx(()=>ListView.separated(
                     itemBuilder: (context, index) {
                       Chat chat = controller.chatList[index];
                       return ChatCard(chat: chat);
@@ -39,13 +39,11 @@ class ChatListScreen extends StatelessWidget {
                     separatorBuilder: (context, index) =>
                         const Column(
                           children: [
-                            SizedBox(height: 10),
-                            Divider(thickness: 1, indent: 5,endIndent: 5,),
-                            SizedBox(height: 10),
+                            SizedBox(height: 20),
                           ],
                         ),
                     itemCount: controller.chatList.length,
-                  ),
+                  )),
                 ),
               ],
             ),
@@ -56,7 +54,7 @@ class ChatListScreen extends StatelessWidget {
           foregroundColor: Colors.white,
           backgroundColor: Colors.blue,
           child: const Icon(Icons.add),
-          onPressed: () {},
+          onPressed: controller.onNewChatPressed,
         ));
   }
 }

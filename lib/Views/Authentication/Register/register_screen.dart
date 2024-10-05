@@ -1,160 +1,182 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:paradise_sri_lanka/Common/Enums/password_textfield_enum.dart';
+import 'package:paradise_sri_lanka/Controllers/Authentication/register_screen_controller.dart';
+import 'package:paradise_sri_lanka/Utils/helpers/helper_functions.dart';
 
-class CreateAccountPage extends StatelessWidget {
-  CreateAccountPage({super.key});
+import '../Widgets/auth_form_field.dart';
 
-  final List<String> countries = [
-    'United States',
-    'Canada',
-    'India',
-    'Australia',
-    'United Kingdom',
-    // Add more countries as needed
-  ];
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
 
-  //final LoginController loginController = Get.put(LoginController());
+  final RegisterScreenController controller =
+      Get.put(RegisterScreenController());
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = HelperFunctions.isDarkMode(context);
     return Scaffold(
-      body: Stack(
-        children: [
-
-
-          //Background Image
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/screenbackground.png'), // Use your image here
-                fit: BoxFit.cover,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            //Background Image
+            Positioned(
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/screenbackground.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
-          ),
 
-          Column(
-            children: [
-              const SizedBox(height: 30),
-
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0), // Add some padding to position it nicely
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context); // Handle back button action
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 30, // You can adjust the size if needed
-                      color: Colors.black, // Change color if needed
+            Column(
+              children: [
+                const SizedBox(height: 30),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                        16.0), // Add some padding to position it nicely
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context); // Handle back button action
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        size: 25, // You can adjust the size if needed
+                        color: isDark
+                            ? Colors.white
+                            : Colors.black, // Change color if needed
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
 
-          // Form Elements
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
+                const SizedBox(height: 50),
+                // Form Elements
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Text(
+                            'Create an Account and \nUnlock Exclusive Experiences',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
 
-                const Text(
-                  'Create an Account and \nUnlock Exclusive Experiences',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
+                          const SizedBox(height: 20),
+
+                          Obx(
+                            () => AuthFormField(
+                              textController: controller.firstNameController,
+                              onChanged: controller.onFirstNameChanged,
+                              focusedColor:
+                                  controller.firstNameFocusedColor.value,
+                              label: "First Name",
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          Obx(
+                            () => AuthFormField(
+                              textController: controller.lastNameController,
+                              onChanged: controller.onLastNameChanged,
+                              focusedColor:
+                                  controller.lastNameFocusedColor.value,
+                              label: "Last Name",
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          Obx(
+                            () => AuthFormField(
+                              textController: controller.emailController,
+                              onChanged: controller.onEmailChanged,
+                              focusedColor: controller.emailFocusedColor.value,
+                              label: "Email",
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Obx(
+                            () => AuthFormField(
+                              textController: controller.countryPickerController,
+                              onChanged: controller.onCountryChanged,
+                              focusedColor: controller.countryFocusedColor.value,
+                              label: "Select your country",
+                              isCountryPicker: true,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          // Password Field
+                          Obx(
+                            () => AuthFormField(
+                              textController: controller.passwordController,
+                              onChanged: controller.onPasswordChanged,
+                              focusedColor:
+                                  controller.passwordFocusedColor.value,
+                              label: "Password",
+                              passwordEnum: controller.passwordVisible.value
+                                  ? PasswordTextFieldEnum.visible
+                                  : PasswordTextFieldEnum.invisible,
+                              visibilityIconPressed:
+                                  controller.onPasswordVisiblePressed,
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          Obx(
+                            () => AuthFormField(
+                              textController:
+                                  controller.confirmPasswordController,
+                              onChanged: controller.onConfirmPasswordChanged,
+                              focusedColor:
+                                  controller.confirmPasswordFocusedColor.value,
+                              label: "Confirm Password",
+                              passwordEnum:
+                                  controller.confirmPasswordVisible.value
+                                      ? PasswordTextFieldEnum.visible
+                                      : PasswordTextFieldEnum.invisible,
+                              visibilityIconPressed: () {
+                                controller.onPasswordVisiblePressed(
+                                    isConfirmPassword: true);
+                              },
+                            ),
+                          ),
+
+                          const SizedBox(height: 30),
+
+                          ElevatedButton(
+                            onPressed: controller.onCreateAccountPressed,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(
+                                  319, 54), // Button size as per your request
+                            ),
+                            child: const Text('Create Account'),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-
-                const SizedBox(height: 20),
-
-                TextField(
-                  onChanged: (value) {
-                    //loginController.onEmailChanged(value);
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                TextField(
-                  onChanged: (value) {
-                    //loginController.onEmailChanged(value);
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: 'Select your country',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: countries.map((String item) {
-                    return DropdownMenuItem<String>(
-                      value: item,
-                      child: Text(item),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    // Handle gender selection
-                  },
-                ),
-
-                const SizedBox(height: 20),
-
-                // Password Field
-                TextField(
-                  onChanged: (value) {
-                    //loginController.onPasswordChanged(value);
-                  },
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                TextField(
-                  onChanged: (value) {
-                    //loginController.onPasswordChanged(value);
-                  },
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Confirm Password',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle sign-in logic
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(319, 54), // Button size as per your request
-                  ),
-                  child: const Text('Create Account'),
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

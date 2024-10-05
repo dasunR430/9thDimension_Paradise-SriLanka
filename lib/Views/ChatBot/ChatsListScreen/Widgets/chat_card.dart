@@ -17,7 +17,7 @@ class ChatCard extends StatelessWidget {
     return GestureDetector(
         onTap: () => controller.onChatCardPressed(chat),
         child: GetBuilder<ChatListController>(
-          id: chat.id,
+          id: chat.chatId,
           builder: (_) => Row(
             children: [
               const CircleAvatar(
@@ -42,23 +42,26 @@ class ChatCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
+                          SizedBox(width: 10),
                           Text(
                             getChatTimeString(chat.dateTime),
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
+                                .bodyMedium,
                           ),
                         ],
                       ),
-                      Text(
-                        chat.message,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(color: Colors.grey),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      Padding(
+                        padding: const EdgeInsets.only(right: 30),
+                        child: Text(
+                          chat.message,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: Colors.grey),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),

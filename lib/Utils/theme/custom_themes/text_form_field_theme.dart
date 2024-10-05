@@ -12,6 +12,7 @@ class CustomTextFormFieldTheme {
     hintStyle: const TextStyle().copyWith(fontSize: 14, color: Colors.black),
     errorStyle: const TextStyle().copyWith(fontStyle: FontStyle.normal),
     floatingLabelStyle: const TextStyle().copyWith(color: Colors.black.withOpacity(0.8)),
+
     border: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(14),
       borderSide: const BorderSide(width: 1, color: Colors.grey),

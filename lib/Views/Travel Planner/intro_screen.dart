@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Views/Travel%20Planner/categories_screen.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
@@ -23,10 +25,10 @@ class IntroScreen extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              padding: EdgeInsets.all(screenWidth * 0.05),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(screenWidth * 0.15),
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -65,7 +67,7 @@ class IntroScreen extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/categories');
+                        Get.to(()=>const CategoriesScreen());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:

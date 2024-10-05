@@ -1,4 +1,5 @@
 import 'package:paradise_sri_lanka/Utils/constants/colors.dart';
+import 'package:paradise_sri_lanka/Utils/theme/custom_themes/text_selection_theme.dart';
 
 import 'custom_themes/appbar_theme.dart';
 import 'custom_themes/bottom_sheet_theme.dart';
@@ -18,7 +19,9 @@ class AppTheme {
     fontFamily: 'Poppins',
     brightness: Brightness.light,
     primaryColor: Colors.blue.shade700,
+    primarySwatch: Colors.blue,
     scaffoldBackgroundColor: ConstantColors.light,
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue, brightness: Brightness.light),
     textTheme: CustomTextTheme.lightTextTheme,
     chipTheme: CustomChipTheme.lightChipTheme,
     appBarTheme: CustomAppBarTheme.lightAppBarTheme,
@@ -27,13 +30,16 @@ class AppTheme {
     elevatedButtonTheme: CustomElevatedButtonTheme.lightElevatedButtonTheme,
     outlinedButtonTheme: CustomOutlinedButtonTheme.lightOutlinedButtonTheme,
     inputDecorationTheme: CustomTextFormFieldTheme.lightInputDecorationTheme,
+    textSelectionTheme: CustomTextSelectionTheme.lightTextSelectionTheme,
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.dark,
     primaryColor: Colors.blue.shade700,
+    primarySwatch: Colors.blue,
     scaffoldBackgroundColor: ConstantColors.dark,
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue, brightness: Brightness.dark),
     textTheme: CustomTextTheme.darkTextTheme,
     chipTheme: CustomChipTheme.darkChipTheme,
     appBarTheme: CustomAppBarTheme.darkAppBarTheme,
@@ -42,5 +48,6 @@ class AppTheme {
     elevatedButtonTheme: CustomElevatedButtonTheme.darkElevatedButtonTheme,
     outlinedButtonTheme: CustomOutlinedButtonTheme.darkOutlinedButtonTheme,
     inputDecorationTheme: CustomTextFormFieldTheme.darkInputDecorationTheme,
+    textSelectionTheme: CustomTextSelectionTheme.darkTextSelectionTheme,
   );
 }

@@ -2,6 +2,8 @@ import 'package:paradise_sri_lanka/Models/visaType.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Services/API/Exceptions/authentication_exception.dart';
+import 'package:paradise_sri_lanka/Services/API/authenticate.dart';
 import '../../Models/entity.dart';
 
 class ParadiseDataBase {
@@ -16,6 +18,155 @@ class ParadiseDataBase {
     }
     return null;
   }
+
+  static Future<http.Response?> postWithJson(String url, Map<String, dynamic> body) async {
+    try {
+      Map<String, String> headers = {'Content-Type': 'application/json'};
+
+      //Add accessToken
+      ParadiseAuthenticate.addAuthorizationHeader(headers);
+
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: json.encode(body),
+      );
+      if(response.statusCode == 403 || response.statusCode == 401){
+        await ParadiseAuthenticate.getAccessToken();
+
+        ParadiseAuthenticate.addAuthorizationHeader(headers);
+
+        response = await http.post(
+          Uri.parse(url),
+          headers: headers,
+          body: json.encode(body),
+        );
+        if(response.statusCode == 403 || response.statusCode == 401) return null;
+      }
+      return response;
+    } catch (e) {
+      if(e is AuthenticationException){
+        //User not logged in
+        Get.snackbar("Error", e.message);
+      }
+      else{
+        Get.snackbar("Error", "An error occurred. Please try again later");
+      }
+    }
+    return null;
+  }
+
+
+  static Future<http.Response?> get(String url) async {
+    try {
+      Map<String, String> headers = {};
+
+      //Add accessToken
+      ParadiseAuthenticate.addAuthorizationHeader(headers);
+
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
+      if(response.statusCode == 403 || response.statusCode == 401){
+        await ParadiseAuthenticate.getAccessToken();
+
+        ParadiseAuthenticate.addAuthorizationHeader(headers);
+
+        response = await http.get(
+          Uri.parse(url),
+          headers: headers,
+        );
+        if(response.statusCode == 403 || response.statusCode == 401) return null;
+      }
+      return response;
+    } catch (e) {
+      if(e is AuthenticationException){
+        //User not logged in
+        Get.snackbar("Error", e.message);
+      }
+      else{
+        Get.snackbar("Error", "An error occurred. Please try again later");
+      }
+    }
+    return null;
+  }
+
+  static Future<http.Response?> putWithJson(String url, Map<String, dynamic> body) async {
+    try {
+      Map<String, String> headers = {'Content-Type': 'application/json'};
+
+      //Add accessToken
+      ParadiseAuthenticate.addAuthorizationHeader(headers);
+
+      http.Response response = await http.put(
+        Uri.parse(url),
+        headers: headers,
+        body: json.encode(body),
+      );
+      if(response.statusCode == 403 || response.statusCode == 401){
+        await ParadiseAuthenticate.getAccessToken();
+
+        ParadiseAuthenticate.addAuthorizationHeader(headers);
+
+        response = await http.put(
+          Uri.parse(url),
+          headers: headers,
+          body: json.encode(body),
+        );
+        if(response.statusCode == 403 || response.statusCode == 401) return null;
+      }
+      return response;
+    } catch (e) {
+      if(e is AuthenticationException){
+        //User not logged in
+        Get.snackbar("Error", e.message);
+      }
+      else{
+        Get.snackbar("Error", "An error occurred. Please try again later");
+      }
+    }
+    return null;
+  }
+
+  static Future<http.Response?> deleteWithJson(String url, Map<String, dynamic> body) async {
+    try {
+      Map<String, String> headers = {'Content-Type': 'application/json'};
+
+      //Add accessToken
+      ParadiseAuthenticate.addAuthorizationHeader(headers);
+
+      http.Response response = await http.delete(
+        Uri.parse(url),
+        headers: headers,
+        body: json.encode(body),
+      );
+      if(response.statusCode == 403 || response.statusCode == 401){
+        await ParadiseAuthenticate.getAccessToken();
+
+        ParadiseAuthenticate.addAuthorizationHeader(headers);
+
+        response = await http.delete(
+          Uri.parse(url),
+          headers: headers,
+          body: json.encode(body),
+        );
+        if(response.statusCode == 403 || response.statusCode == 401) return null;
+      }
+      return response;
+    } catch (e) {
+      if(e is AuthenticationException){
+        //User not logged in
+        Get.snackbar("Error", e.message);
+      }
+      else{
+        Get.snackbar("Error", "An error occurred. Please try again later");
+      }
+    }
+    return null;
+  }
+
+
 
   static Future<void> _getVisaTypes() async {
     //TODO: Fetch data from the server
