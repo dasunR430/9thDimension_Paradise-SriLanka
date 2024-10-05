@@ -93,7 +93,18 @@ class _PassportAndPhotoScreenState extends State<PassportAndPhotoScreen> {
                     children: [
                       ElevatedButton(
                         onPressed: sectionController.nextPage,
-                        child: const Text('Next'),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          elevation: 5,
+                        ),
+                        child: const Text('Next')
+                        ,
                       ),
                     ],
                   ),

@@ -155,15 +155,15 @@ class PersonalDetailsScreen extends StatelessWidget {
                 )),
             const SizedBox(height: 25),
 
-            if(controller.applicantsController.applicantType!="Main")
+            if (controller.applicantsController.applicantType != "Main")
               Obx(() => CustomTextInputField(
-                isRequired: true,
-                questionText: 'What is your relationship to the main applicant?',
-                labelText: 'Relationship',
-                controller: controller.relationshipController.value,
-              )),
+                    isRequired: true,
+                    questionText:
+                        'What is your relationship to the \nmain applicant?',
+                    labelText: 'Relationship',
+                    controller: controller.relationshipController.value,
+                  )),
             const SizedBox(height: 25),
-
 
             // Next Button with Validation
 
@@ -172,10 +172,30 @@ class PersonalDetailsScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: controller.previousPage,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: 5,
+                  ),
                   child: const Text('Back'),
                 ),
                 ElevatedButton(
                   onPressed: controller.nextPage,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: 5,
+                  ),
                   child: const Text('Next'),
                 ),
               ],

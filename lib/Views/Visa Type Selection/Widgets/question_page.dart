@@ -1,10 +1,12 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_date_picker.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
 import 'package:tuple/tuple.dart';
 import '../../../Common/Widgets/custom_dropdown_field.dart';
 import '../../../Utils/helpers/helper_functions.dart';
+import '../../../Controllers/visa_type_selection_controller.dart';
 
 class QuestionPage extends StatelessWidget {
   final String title;
@@ -15,7 +17,10 @@ class QuestionPage extends StatelessWidget {
   final bool isDropdown;
   final bool useCountryPicker;
   final bool useDatePicker;
+  final bool isMultiSelect;
   final TextEditingController textController;
+  final int maxSelections;
+  final int minSelections;
 
   const QuestionPage({
     super.key,
@@ -28,6 +33,9 @@ class QuestionPage extends StatelessWidget {
     this.isDropdown = false,
     this.useCountryPicker = false,
     this.useDatePicker = false,
+    this.isMultiSelect = false,
+    this.maxSelections = 0,
+    this.minSelections = 0,
   });
 
   void _showCountryPicker(BuildContext context) {
@@ -63,73 +71,150 @@ class QuestionPage extends StatelessWidget {
     );
   }
 
+  Widget _buildMultiSelectList() {
+    final VisaTypeSelectionController controller = Get.find();
+    return Expanded(
+      child: ListView.builder(
+        itemCount: dropdownItems.length,
+        itemBuilder: (context, index) {
+          final item = dropdownItems[index];
+          return Obx(() => CheckboxListTile(
+                title: Text(item.item2),
+                value: controller.selectedActivities.contains(item.item1) ||
+                    controller.selectedPlaces.contains(item.item1),
+                onChanged: (bool? value) {
+                  if (controller.titles[controller.currentPage.value]
+                      .contains('activities')) {
+                    controller.selectActivity(item.item1);
+                  } else {
+                    controller.selectPlace(item.item1);
+                  }
+                },
+              ));
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (useCountryPicker) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 80.0),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20.0),
-            GestureDetector(
-              onTap: () => _showCountryPicker(context),
-              child: AbsorbPointer(
-                child: CustomTextInputField(
-                  isRequired: true,
-                  questionText: title,
-                  labelText: 'Select Country',
-                  controller: textController,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30.0),
-            _buildNavigationButtons(),
-          ],
-        ),
-      );
+      return _buildCountryPickerPage(context);
     }
 
     if (useDatePicker) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 80.0),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20.0),
-            CustomDatePickerField(
-              questionText: title,
-              labelText: 'Select Date',
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime(2100),
-              controller: textController,
-            ),
-            const SizedBox(height: 30.0),
-            _buildNavigationButtons(),
-          ],
-        ),
-      );
+      return _buildDatePickerPage();
     }
 
+    if (isMultiSelect) {
+      return _buildMultiSelectPage();
+    }
+
+    return _buildDropdownPage();
+  }
+
+  Widget _buildCountryPickerPage(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          const SizedBox(height: 80.0),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20.0),
+          GestureDetector(
+            onTap: () => _showCountryPicker(context),
+            child: AbsorbPointer(
+              child: CustomTextInputField(
+                isRequired: true,
+                questionText: title,
+                labelText: 'Select Country',
+                controller: textController,
+              ),
+            ),
+          ),
+          const SizedBox(height: 30.0),
+          _buildNavigationButtons(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDatePickerPage() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          const SizedBox(height: 80.0),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20.0),
+          CustomDatePickerField(
+            questionText: title,
+            labelText: 'Select Date',
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime(2100),
+            controller: textController,
+          ),
+          const SizedBox(height: 30.0),
+          _buildNavigationButtons(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMultiSelectPage() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          const SizedBox(height: 50.0),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20.0),
+          _buildMultiSelectList(),
+          const SizedBox(height: 10.0),
+          Text(
+            title.contains("activities")
+                ? "Please select exactly 3 activities"
+                : "Please select 1 to 5 places",
+            style: const TextStyle(
+              fontSize: 16.0,
+              fontStyle: FontStyle.italic,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          _buildNavigationButtons(),
+          const SizedBox(height: 20.0),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDropdownPage() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(

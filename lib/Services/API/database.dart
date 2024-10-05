@@ -3,9 +3,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
 import '../../Models/entity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ParadiseDataBase {
   static List<VisaType> _visaTypes = [];
+  static int entityId = 8;
   static Future<List<VisaType>?> get visaTypes async {
     if (_visaTypes.isNotEmpty) {
       return _visaTypes;
@@ -74,15 +76,15 @@ class ParadiseDataBase {
       ApplicantEntity applicantEntity) async {
     try {
       final url =
-          Uri.parse('http://13.51.159.48:3000/api/data/addApplicantEntity');
+          Uri.parse('http://16.171.38.112:3000/api/data/addApplicantEntity');
 
       // Prepare the request body
       final body = {
         "userId": 9, // You might want to get this from user authentication
         //"visaTypeId": applicantEntity.visaTypeId,
-        "visaTypeId": "tourist_30",
+        "visaTypeId": applicantEntity.visaTypeId,
         //"countryId": applicantEntity.countryId,
-        "countryId": "CAN",
+        "countryId": applicantEntity.countryId,
         "purpose":
             "Tourism", // You might want to add this field to your ApplicantEntity
         "startDate": applicantEntity.startDate.toIso8601String(),
@@ -347,6 +349,23 @@ class ParadiseDataBase {
 
       if (response.statusCode == 200) {
         Get.snackbar('Success', 'Application saved successfully.');
+        // Parse the response body
+        final responseData = json.decode(response.body);
+
+        // Extract the entityId and applicantId
+        entityId = int.parse(responseData['entityId'].toString());
+        final int applicantId =
+            int.parse(responseData['applicantId'].toString());
+
+        // Pass the data to the front-end
+
+        // Optionally, you can also show this information in a snackbar
+        /*Get.snackbar(
+          'Application Saved',
+          'Entity ID: $entityId, Applicant ID: $applicantId',
+          duration: Duration(seconds: 5),
+        );*/
+
         // Navigate to the next screen or perform any other action after saving
         // For example:
         // Get.to(() => ConfirmationScreen());
@@ -356,6 +375,154 @@ class ParadiseDataBase {
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to save application: $e');
+    }
+  }
+
+  static Future<void> processRecomendationModel(
+      List<String> activities, List<String> places) async {
+    try {
+      final url = Uri.parse('http://16.171.38.112:5000/recommend');
+      final body = {
+        'user_activities': activities,
+        'user_bucket_list': places,
+        'id': entityId,
+      };
+      // Send the POST request
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(body),
+      );
+
+      if (response.statusCode == 200) {
+        Get.snackbar('Success', 'Recommendation model processed successfully.');
+        final prefs = await SharedPreferences.getInstance();
+        final existingEntityId = prefs.getInt('entityId');
+        if (existingEntityId != null) {
+          await prefs.setInt('entityId', entityId);
+        } else {
+          await prefs.setInt('entityId', entityId);
+        }
+        // You can handle the response data here if needed
+        // For example: final recommendations = json.decode(response.body);
+      } else {
+        throw Exception(
+            'Failed to process recommendation model. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to process recomendation model: $e');
+    }
+  }
+
+  // Add these methods to your DatabaseAPI class
+  static Future<Map<String, dynamic>> getVisaStatuses(int entityId) async {
+    final data = <String, dynamic>{};
+    try {
+      final mainApplicant = await _getMainApplicantStatus(entityId);
+      data['mainApplicant'] = mainApplicant;
+      data['MainApplicantStatus'] = "success";
+    } catch (e) {
+      data['MainApplicantStatus'] = "No data";
+    }
+    try {
+      final otherApplicants = await _getOtherApplicantsStatus(entityId);
+      data['otherApplicants'] = otherApplicants;
+      data['OtherApplicantsStatus'] = "success";
+    } catch (e) {
+      data['OtherApplicantsStatus'] = "No data";
+    }
+    try {
+      final recommedations = await _getRecommedations(entityId);
+      data['recommedations'] = recommedations[0]['places'];
+      data['RecommedationsStatus'] = "success";
+    } catch (e) {
+      data['RecommedationsStatus'] = "No data";
+    }
+    // Add a snackbar to show recommendations
+
+    return data;
+  }
+
+  static Future<Map<String, dynamic>> _getMainApplicantStatus(
+      int entityId) async {
+    try {
+      final url = Uri.parse(
+          'http://16.171.38.112:3000/api/data/getMainApplicantEntityById');
+      final body = {
+        'id': entityId,
+      };
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(body),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        if (result == null || result.isEmpty) {
+          return {"status": "No data"};
+        }
+        return result;
+      } else {
+        throw Exception(
+            'Failed to load main applicant status: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching main applicant status: $e');
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> _getOtherApplicantsStatus(
+      int entityId) async {
+    try {
+      final url = Uri.parse(
+          'http://16.171.38.112:3000/api/data/getapplicantEntityById');
+      final body = {
+        'id': entityId,
+      };
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(body),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        return data.cast<Map<String, dynamic>>();
+      } else {
+        throw Exception(
+            'Failed to load other applicants status: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching other applicants status: $e');
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> _getRecommedations(
+      int entityId) async {
+    try {
+      final url =
+          Uri.parse('http://16.171.38.112:3000/api/data/getRecommendations');
+      final body = {
+        'id': entityId,
+      };
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(body),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        return [
+          data
+        ]; // Wrap the single map in a list to maintain the expected return type
+      } else {
+        throw Exception(
+            'Failed to load other applicants status: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching other applicants status: $e');
     }
   }
 }

@@ -17,6 +17,17 @@ class VisaApplicationController extends GetxController {
 
   static VisaApplicationController instance = Get.find();
 
+  // Add this method to get the status of each section
+  String getStatus(int step) {
+    if (currentPage.value > step) {
+      return 'completed';
+    } else if (currentPage.value == step) {
+      return 'in-progress';
+    } else {
+      return 'pending';
+    }
+  }
+
   // Controllers for text fields
   final surnameController = TextEditingController().obs;
   final otherNamesController = TextEditingController().obs;
@@ -54,7 +65,7 @@ class VisaApplicationController extends GetxController {
 
   Future<String> uploadFile(String filePath, String email) async {
     String fileName = basename(filePath);
-    String url = 'http://13.51.159.48:9001/upload';
+    String url = 'http://16.171.38.112:8000/upload';
 
     dio.FormData formData = dio.FormData.fromMap({
       "file": await dio.MultipartFile.fromFile(filePath, filename: fileName),
@@ -92,7 +103,7 @@ class VisaApplicationController extends GetxController {
     if (partialUrl.startsWith('http://') || partialUrl.startsWith('https://')) {
       return partialUrl;
     }
-    return 'http://13.51.159.48:9001${Uri.encodeFull(partialUrl)}';
+    return 'http://16.171.38.112:8000${Uri.encodeFull(partialUrl)}';
   }
 
   Future<VisaApplicant> createVisaApplicant() async {
@@ -227,8 +238,8 @@ class VisaApplicationController extends GetxController {
           maritalStatusController.value.text.isEmpty ||
           passportNumberController.value.text.isEmpty ||
           passportExpiryDateController.value.text.isEmpty ||
-          (relationshipController.value.text.isEmpty && applicantsController.applicantType!="Main")
-      ) {
+          (relationshipController.value.text.isEmpty &&
+              applicantsController.applicantType != "Main")) {
         Get.snackbar(
           'Validation Error',
           'Please fill all required fields.',
@@ -279,7 +290,7 @@ class VisaApplicationController extends GetxController {
             Get.find<ApplicantController>();
         currentPage.value = 0;
         createVisaApplicant().then((applicant) {
-          applicantController.finalizeApplication(applicant,this);
+          applicantController.finalizeApplication(applicant, this);
         }).catchError((error) {
           // Handle the error (e.g., show an error message to the user)
         });
@@ -390,15 +401,5 @@ class VisaApplicationController extends GetxController {
     emailController.value.text = email;
     homeAddressController.value.text = homeAddress;
     this.lastVisitedDate.value.text = lastVisitedDate;
-  }
-
-  String getStatus(int step) {
-    if (currentPage.value >= step) {
-      return 'completed';
-    } else if (currentPage.value == step - 1) {
-      return 'in-progress';
-    } else {
-      return 'pending';
-    }
   }
 }
