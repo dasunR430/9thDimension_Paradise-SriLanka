@@ -91,6 +91,14 @@ class VisaPortalScreen extends StatelessWidget {
               ],
             ),
           ),
+          AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ),
         ],
       ),
     );

@@ -70,6 +70,7 @@ dependencies:
   flutter_sound: ^9.1.8
   permission_handler: ^10.2.0
   sqflite: ^2.3.3+1
+  iconsax: ^0.0.8
 
 dev_dependencies:
   flutter_test:
@@ -97,6 +98,7 @@ flutter:
   assets:
      - assets/images/
      - assets/images/bot_images/
+     - assets/images/Logo/
      - assets/images/Home_Screen/
      -  assets/images/Search_Screen/
 

@@ -37,6 +37,7 @@ class ChatBotAppBar extends SliverPersistentHeaderDelegate {
                 child: AppBar(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
+                  iconTheme: const IconThemeData(color: Colors.white),
                   actions: [
                     IconButton(
                       onPressed: () {

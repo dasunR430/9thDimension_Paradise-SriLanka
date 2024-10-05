@@ -5,6 +5,7 @@ import 'package:paradise_sri_lanka/Services/API/authenticate.dart';
 import 'package:paradise_sri_lanka/Utils/validators/validation.dart';
 import 'package:paradise_sri_lanka/Views/Authentication/ForgotPassword/forgot_password_screen.dart';
 import 'package:paradise_sri_lanka/Views/Authentication/Register/register_screen.dart';
+import 'package:paradise_sri_lanka/Views/Navigation/navigation_screen.dart';
 
 
 class LoginController extends GetxController {
@@ -36,8 +37,7 @@ class LoginController extends GetxController {
         }
         return;
       }
-      //TODO: Navigate to the home screen
-      //Get.to();
+      Get.off(()=>NavigationScreen());
       print((await ParadiseAuthenticate.currentUser)?.userId);
     }
 

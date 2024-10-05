@@ -9,23 +9,26 @@ class TrendingWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               "Trending now",
               style: TextStyle(fontFamily:'Inter', fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
           ),
-          Container(
-            height: 210.0,
-            width: double.infinity,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildTrendingItem(context, 'assets/images/Home_Screen/Frame 427318697.png'),
-                _buildTrendingItem(context, 'assets/images/Home_Screen/Frame 427318698.png'),
-                _buildTrendingItem(context, 'assets/images/Home_Screen/Frame 427318699.png'),
-              ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: SizedBox(
+              height: 210.0,
+              width: double.infinity,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _buildTrendingItem(context, 'assets/images/Home_Screen/Frame 427318697.png'),
+                  _buildTrendingItem(context, 'assets/images/Home_Screen/Frame 427318698.png'),
+                  _buildTrendingItem(context, 'assets/images/Home_Screen/Frame 427318699.png'),
+                ],
+              ),
             ),
           ),
         ],

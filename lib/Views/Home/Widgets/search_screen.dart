@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'custom_app_bar.dart';
+import '../../Navigation/Widgets/custom_app_bar.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -69,9 +69,9 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             SizedBox(height: 100),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                image: const DecorationImage(
+                image: DecorationImage(
                   image: AssetImage(
                     'assets/images/Search_Screen/hiking.gif',
                   ),

@@ -5,6 +5,7 @@ import 'package:paradise_sri_lanka/Services/API/Exceptions/authentication_except
 import 'package:paradise_sri_lanka/Services/API/authenticate.dart';
 import 'package:paradise_sri_lanka/Utils/helpers/helper_functions.dart';
 import 'package:paradise_sri_lanka/Utils/validators/validation.dart';
+import 'package:paradise_sri_lanka/Views/Navigation/navigation_screen.dart';
 
 class RegisterScreenController extends GetxController{
   var firstNameFocusedColor = Colors.red.obs,
@@ -41,8 +42,7 @@ class RegisterScreenController extends GetxController{
           }
           return;
         }
-        //TODO: Navigate to the home screen
-        //Get.to();
+        Get.off(()=>NavigationScreen());
     }
   }
 

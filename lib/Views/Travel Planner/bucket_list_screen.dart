@@ -180,7 +180,7 @@ class _BucketListScreenState extends State<BucketListScreen> {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage('assets/continue_button.png'),
+                      image: AssetImage('assets/images/continue_button.png'),
                       fit: BoxFit.cover,
                     ),
                   ),

@@ -9,11 +9,11 @@ class ToolsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Tools",
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -27,7 +27,7 @@ class ToolsWidget extends StatelessWidget {
               }),
             ],
           ),
-          SizedBox(height: 0.5), // Space between the rows
+          const SizedBox(height: 0.5), // Space between the rows
 
           _buildToolItem2(context, "Collect your Souvenirs",
               "assets/images/Home_Screen/Collect your Soveniours.png", () {

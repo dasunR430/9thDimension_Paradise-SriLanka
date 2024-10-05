@@ -17,7 +17,7 @@ class HeroSection extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        Positioned(
+        const Positioned(
           bottom: 65.0,
           left: 28.0,
           child: Text(

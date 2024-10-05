@@ -8,12 +8,12 @@ class PassesWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 16.0), // Add some space (16.0 pixels)
-          Text(
-            "Apply for Visa",
+          const SizedBox(height: 30.0), // Add some space (16.0 pixels)
+          const Text(
+            "Premium Passes",
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
@@ -22,12 +22,12 @@ class PassesWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20.0),
-                Text(
+                const SizedBox(height: 20.0),
+                const Text(
                   "Explore more with Sri Lanka's exclusive travel passes",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -35,21 +35,24 @@ class PassesWidget extends StatelessWidget {
                     fontSize: 25.0,
                   ),
                 ),
-                SizedBox(height: 18.0),
+                const SizedBox(height: 18.0),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Spacer(),
                     ElevatedButton(
                       onPressed: () {
                         // Handle visa application logic
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.blue, backgroundColor: Colors.white, // Text color of the button
+                        foregroundColor: Colors.blue, backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0), // Rounded corners
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
                       ),
-                      child: Text("Get Passes"),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text("Get Passes"),
+                      ),
                     ),
                   ],
                 ),

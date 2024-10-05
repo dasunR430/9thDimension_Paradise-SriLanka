@@ -26,7 +26,7 @@ class ProfileAppBar extends SliverPersistentHeaderDelegate {
               padding: const EdgeInsets.all(8.0),
               child: AppBar(
                 title: const Text("Profile", style: TextStyle(color: Colors.white),),
-
+                iconTheme: const IconThemeData(color: Colors.white),
               ),
             ),
             shrinkOffset < maxExtent/4 ?Opacity(
