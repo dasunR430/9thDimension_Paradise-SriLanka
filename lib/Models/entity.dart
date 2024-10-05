@@ -18,6 +18,8 @@ class ApplicantEntity {
   String? cityOfStay;
   String? zipOfStay;
   List<TravelledCountry> travelHistory;
+  List<String> activities;
+  List<String> places;
 
   ApplicantEntity get applicants => this;
   List<TravelledCountry> get travelHistoryList => travelHistory;
@@ -33,7 +35,11 @@ class ApplicantEntity {
     this.cityOfStay,
     this.zipOfStay,
     List<TravelledCountry>? travelHistory,
-  }) : travelHistory = travelHistory ?? [] {
+    List<String>? activities,
+    List<String>? places,
+  })  : travelHistory = travelHistory ?? [],
+        activities = activities ?? [],
+        places = places ?? [] {
     endDate = startDate
         .add(Duration(days: ParadiseDataBase.getVisaType(visaTypeId).duration));
   }
@@ -54,6 +60,8 @@ class ApplicantEntity {
       'cityOfStay': cityOfStay,
       'zipOfStay': zipOfStay,
       'travelHistory': travelHistory.map((country) => country.toMap()).toList(),
+      'activities': activities,
+      'places': places,
     };
   }
 
@@ -65,7 +73,9 @@ class ApplicantEntity {
         travelHistory = (map['travelHistory'] as List<dynamic>?)
                 ?.map((item) => TravelledCountry.fromMap(item))
                 .toList() ??
-            [] {
+            [],
+        activities = map['activities'] ?? [],
+        places = map['places'] ?? [] {
     entityId = map['entityId'];
 
     mainVisaApplicant = map['mainVisaApplicant'] != null

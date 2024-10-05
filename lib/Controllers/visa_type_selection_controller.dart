@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paradise_sri_lanka/Views/Applicants%20Screen/test_sceen.dart';
 import 'package:paradise_sri_lanka/Views/Visa%20Form/form_screen.dart';
+import 'package:paradise_sri_lanka/Views/Visa%20Portal/visa_portal_screen.dart';
 import '../Models/visaType.dart';
 import '../Services/API/database.dart';
 import 'applicants_controller.dart';
@@ -12,7 +13,7 @@ class VisaTypeSelectionController extends GetxController {
 
   RxInt currentPage = 0.obs;
   int _cPage = 0;
-  var pages = 5;
+  var pages = 7; // Increased to include the new places page
   RxDouble progress = 0.0.obs;
 
   final PageController pageController = PageController();
@@ -28,16 +29,22 @@ class VisaTypeSelectionController extends GetxController {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController zipController = TextEditingController();
+  final TextEditingController activitiesController = TextEditingController();
+  final TextEditingController placesController = TextEditingController();
 
+  RxList<String> selectedActivities = <String>[].obs;
+  RxList<String> selectedPlaces = <String>[].obs;
   List<String> titles = [
     "Let's Start",
     "Just a few more questions",
     "Just a few more questions",
     "Almost there",
-    "Last Question"
+    "Last Question",
+    "Select your favorite activities",
+    "Select your favorite places",
   ];
 
-  late List<VisaType> visaTypes;
+  late final List<VisaType> visaTypes;
   List<String> purposes = [
     'Sightseeing / Holidaying',
     'Visiting friends and relatives',
@@ -49,12 +56,35 @@ class VisaTypeSelectionController extends GetxController {
     'Individual',
     'Group',
   ];
+  final List<String> activities = [
+    'Beach relaxation',
+    'Surfing',
+    'Scuba diving',
+    'Snorkeling',
+    'Whale watching',
+    'Hiking',
+    'Wildlife safari',
+    'Tea plantation tour',
+    'Cultural sightseeing',
+    'Temple visits',
+    'Cooking classes',
+    'Ayurvedic spa treatments',
+    'Train rides through scenic routes',
+    'Water rafting',
+    'Cycling tours',
+    'Yoga and meditation retreats',
+    'Elephant orphanage visit',
+    'Gem mining tour',
+    'Cinnamon plantation visit',
+    'Stilt fishing observation',
+  ];
 
   @override
   void onInit() {
     _getVisaTypes();
     super.onInit();
   }
+
   @override
   void onClose() {
     // Dispose controllers when not needed
@@ -69,6 +99,8 @@ class VisaTypeSelectionController extends GetxController {
     addressController.dispose();
     cityController.dispose();
     zipController.dispose();
+    activitiesController.dispose();
+    placesController.dispose();
     super.onClose();
   }
 
@@ -95,7 +127,6 @@ class VisaTypeSelectionController extends GetxController {
         String visaTypeId = visaSubCategoryController.value.text;
         DateTime? startDate = tryParseDate(arrivalDateController.value.text);
         String travelType = travelTypeController.value.text;
-        //DateTime? endDate = tryParseDate(departureDateController.value.text);
 
         if (startDate == null) {
           Get.snackbar(
@@ -109,17 +140,20 @@ class VisaTypeSelectionController extends GetxController {
           return;
         }
 
+        _cPage = 0;
         applicantsController.setVisaDetails(
           countryId: countryId,
           visaTypeId: visaTypeId,
           startDate: startDate,
+          activities: selectedActivities,
+          places: selectedPlaces,
         );
 
         // Navigate based on travel type
         if (travelType != "Individual") {
           Get.off(() => ApplicantsScreen());
         } else {
-          Get.off(() => FormScreen("Main","Individual"));
+          applicantsController.addMainApplicantIndividual();
         }
       } else {
         Get.snackbar(
@@ -135,7 +169,9 @@ class VisaTypeSelectionController extends GetxController {
   }
 
   void previousPage() {
-    if (_cPage > 0) {
+    if (_cPage <= 0) {
+      Get.off(() => VisaPortalScreen());
+    } else if (_cPage > 0) {
       _cPage--;
       pageController.animateToPage(_cPage,
           duration: const Duration(milliseconds: 300), curve: Curves.linear);
@@ -166,6 +202,10 @@ class VisaTypeSelectionController extends GetxController {
         return visaSubCategoryController.text.isNotEmpty;
       case 4:
         return arrivalDateController.text.isNotEmpty;
+      case 5:
+        return selectedActivities.isNotEmpty && selectedActivities.length == 3;
+      case 6:
+        return selectedPlaces.isNotEmpty && selectedPlaces.length <= 5;
       default:
         return true;
     }
@@ -187,5 +227,23 @@ class VisaTypeSelectionController extends GetxController {
       }
       visaTypes = value;
     });
+  }
+
+  void selectActivity(String activity) {
+    if (selectedActivities.contains(activity)) {
+      selectedActivities.remove(activity);
+    } else if (selectedActivities.length < 5) {
+      selectedActivities.add(activity);
+    }
+    activitiesController.text = selectedActivities.join(', ');
+  }
+
+  void selectPlace(String place) {
+    if (selectedPlaces.contains(place)) {
+      selectedPlaces.remove(place);
+    } else if (selectedPlaces.length < 5) {
+      selectedPlaces.add(place);
+    }
+    placesController.text = selectedPlaces.join(', ');
   }
 }

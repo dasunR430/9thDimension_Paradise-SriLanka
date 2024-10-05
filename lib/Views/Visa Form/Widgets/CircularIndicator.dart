@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CircularIndicator extends StatelessWidget {
-  final String status;
+  final RxString status;
   final int number;
 
   const CircularIndicator({
-    super.key,
+    Key? key,
     required this.status,
     required this.number,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor;
+    return Obx(() {
+      Color backgroundColor;
+      Color textColor;
 
-    switch (status) {
-      case 'done':
-        backgroundColor = const Color(0xFF5E5E5E);
-        break;
-      case 'current':
-        backgroundColor = const Color(0xFF2F80ED);
-        break;
-      default:
-        backgroundColor = Colors.white;
-        break;
-    }
+      switch (status.value) {
+        case 'completed':
+          backgroundColor = const Color(0xFF5E5E5E);
+          textColor = Colors.white;
+          break;
+        case 'in-progress':
+          backgroundColor = const Color(0xFF2F80ED);
+          textColor = Colors.white;
+          break;
+        default:
+          backgroundColor = Colors.white;
+          textColor = const Color(0xFF5E5E5E);
+          break;
+      }
 
-    return CircleAvatar(
-      radius: 20,
-      backgroundColor: backgroundColor,
-      child: Text(
-        number.toString(),
-        style: TextStyle(
-          fontSize: 19,
-          color: status == 'next' ? const Color(0xFF5E5E5E) : Colors.white,
+      return CircleAvatar(
+        radius: 20,
+        backgroundColor: backgroundColor,
+        child: Text(
+          number.toString(),
+          style: TextStyle(
+            fontSize: 19,
+            color: textColor,
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

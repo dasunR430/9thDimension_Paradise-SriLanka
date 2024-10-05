@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paradise_sri_lanka/Views/Visa Type Selection/visa_type_selection.dart';
+import 'package:paradise_sri_lanka/Controllers/applicants_controller.dart';
+import '../Visa Status Check/visa_status_check_screen.dart';
 
 class VisaPortalScreen extends StatelessWidget {
   const VisaPortalScreen({super.key});
@@ -14,7 +18,8 @@ class VisaPortalScreen extends StatelessWidget {
             height: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/screenbackground.png'), // Use your image here
+                image: AssetImage(
+                    'assets/images/screenbackground.png'), // Use your image here
                 fit: BoxFit.cover,
               ),
             ),
@@ -35,7 +40,8 @@ class VisaPortalScreen extends StatelessWidget {
                     color: Colors.blue, // Matching text color
                   ),
                 ),
-                const SizedBox(height: 40), // Add spacing between title and image
+                const SizedBox(
+                    height: 40), // Add spacing between title and image
 
                 // Add the image
                 Image.asset(
@@ -43,18 +49,26 @@ class VisaPortalScreen extends StatelessWidget {
                   height: 300, // Adjust height as needed
                   fit: BoxFit.contain,
                 ),
-                const SizedBox(height: 40), // Add spacing between image and buttons
+                const SizedBox(
+                    height: 40), // Add spacing between image and buttons
 
                 // Apply for Visa Button
                 ElevatedButton(
                   onPressed: () {
                     // Add action for "Apply for Visa" button
+                    // Navigate to the visa selection screen
+                    if (Get.find<ApplicantController>() != null) {
+                      Get.delete<ApplicantController>();
+                      Get.put(ApplicantController());
+                    }
+                    Get.to(() => VisaTypeSelection());
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue, // Button color
                     fixedSize: const Size(319, 54), // Button size
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8), // Match border radius
+                      borderRadius:
+                          BorderRadius.circular(8), // Match border radius
                     ),
                   ),
                   child: const Text(
@@ -69,13 +83,15 @@ class VisaPortalScreen extends StatelessWidget {
                 // Check status of your visa Button
                 ElevatedButton(
                   onPressed: () {
+                    Get.to(() => VisaStateScreen());
                     // Add action for "Check status of your visa" button
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue, // Button color
                     fixedSize: const Size(319, 54), // Button size
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8), // Match border radius
+                      borderRadius:
+                          BorderRadius.circular(8), // Match border radius
                     ),
                   ),
                   child: const Text(
@@ -93,4 +109,16 @@ class VisaPortalScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.put(ApplicantController());
+  runApp(GetMaterialApp(
+    home: const VisaPortalScreen(),
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    ),
+  ));
 }

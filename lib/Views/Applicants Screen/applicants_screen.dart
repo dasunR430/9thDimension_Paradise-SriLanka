@@ -20,7 +20,6 @@ class ApplicantsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: GetBuilder<ApplicantController>(
-            init: ApplicantController(),
             builder: (controller) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +38,7 @@ class ApplicantsScreen extends StatelessWidget {
                         const Text("Main Applicant",
                             style: TextStyle(
                                 fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.bold, 
                                 color: Colors.blue)),
                         const SizedBox(height: 10),
                         controller.applicantEntity.mainVisaApplicant != null
@@ -49,6 +48,8 @@ class ApplicantsScreen extends StatelessWidget {
                                 onRemove: () {
                                   // Optionally, add a method to remove main applicant
                                   controller.removeMainApplicant();
+                                  // Refresh the screen after removing the main applicant
+                                  controller.update();
                                 },
                                 applicantType: "Main",
                               )
@@ -89,8 +90,10 @@ class ApplicantsScreen extends StatelessWidget {
                               .map(
                                 (applicant) => VisaApplicantCard(
                                   applicant: applicant.applicant,
-                                  onRemove: () =>
-                                      controller.removeApplicant(applicant),
+                                  onRemove: () {
+                                    controller.removeApplicant(applicant);
+                                    controller.update();
+                                  },
                                   applicantType: "Other",
                                 ),
                               )
@@ -126,7 +129,8 @@ class ApplicantsScreen extends StatelessWidget {
                         }
 
                         await controller.saveApplicantToDatabase();
-                        Get.to(()=>VisaPortalScreen());
+                        await controller.processRecomendationModel();
+                        Get.to(() => VisaPortalScreen());
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -158,8 +162,6 @@ class ApplicantsScreen extends StatelessWidget {
 }
 
 void main() {
-  Get.put(ApplicantController());
-  Get.put(VisaApplicationController());
   runApp(GetMaterialApp(
     home: ApplicantsScreen(),
   ));

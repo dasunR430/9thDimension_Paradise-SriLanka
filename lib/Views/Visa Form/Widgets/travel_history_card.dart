@@ -7,6 +7,7 @@ import '../../../Models/travelled_country.dart';
 import 'package:paradise_sri_lanka/Common/Widgets/custom_text_input.dart';
 import 'package:country_picker/country_picker.dart';
 import '../../../Utils/helpers/helper_functions.dart';
+import 'dart:io';
 
 class TravelledCountryCard extends StatelessWidget {
   final TravelledCountry travelledCountry;
@@ -32,8 +33,13 @@ class TravelledCountryCard extends StatelessWidget {
       exclude: ['LK'],
       showPhoneCode: false,
       onSelect: (Country country) {
-        onCountryChanged(
-            HelperFunctions.isoToPassportCode(country.countryCode));
+        final countryCode =
+            HelperFunctions.isoToPassportCode(country.countryCode);
+        onCountryChanged(countryCode);
+        // Update the travelledCountry object
+        travelledCountry.country = countryCode;
+        // Trigger the onEdit callback to update the parent widget
+        onEdit(travelledCountry);
       },
       countryListTheme: CountryListThemeData(
         borderRadius: const BorderRadius.only(
@@ -117,33 +123,50 @@ class TravelledCountryCard extends StatelessWidget {
             const SizedBox(height: 20),
 
             // File upload button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.blue,
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue,
+                    ),
+                    onPressed: () async {
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['jpg', 'pdf', 'png'],
+                      );
+                      if (result != null && result.files.isNotEmpty) {
+                        onUploadFile(result.files.first);
+                        // Update the travelledCountry object
+                        travelledCountry.attachment = result.files.first.path;
+                        // Trigger the onEdit callback to update the parent widget
+                        onEdit(travelledCountry);
+                      }
+                    },
+                    child: const Text('Upload File'),
                   ),
-                  onPressed: () async {
-                    FilePickerResult? result =
-                        await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['jpg', 'pdf', 'png'],
-                    );
-                    if (result != null && result.files.isNotEmpty) {
-                      onUploadFile(result.files.first);
-                    }
-                  },
-                  child: const Text('Upload File'),
-                ),
-                if (travelledCountry.attachment != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Text(travelledCountry.attachment!),
-                  ),
-              ],
+                  if (travelledCountry.attachment != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: _isImageFile(travelledCountry.attachment!)
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.file(
+                                File(travelledCountry.attachment!),
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Text(basename(travelledCountry.attachment!)),
+                    ),
+                ],
+              ),
             ),
             const SizedBox(height: 20),
           ],
@@ -151,4 +174,15 @@ class TravelledCountryCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String basename(String path) {
+  var parts = path.split('/');
+  return parts.last.length > 30
+      ? '${parts.last.substring(0, 13)}...${parts.last.substring(parts.last.length - 13)}'
+      : parts.last;
+}
+
+bool _isImageFile(String path) {
+  return ['jpg', 'png', 'jpeg'].any((ext) => path.endsWith(ext));
 }

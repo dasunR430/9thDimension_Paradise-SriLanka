@@ -51,7 +51,7 @@ class CustomDropdownField extends StatelessWidget {
           items: items.map((Tuple2<String, String> pair) {
             return DropdownMenuItem<String>(
               value: pair.item1,
-              child: SizedBox(width: HelperFunctions.screenWidth()-90, child: Text(pair.item2, maxLines: 3, style: const TextStyle(overflow: TextOverflow.ellipsis, ))),
+              child: SizedBox(width: HelperFunctions.screenWidth()-150, child: Text(pair.item2, maxLines: 3, style: const TextStyle(overflow: TextOverflow.ellipsis, ))),
             );
           }).toList(),
           onChanged: (String? value) {

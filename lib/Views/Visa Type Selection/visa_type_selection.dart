@@ -4,6 +4,8 @@ import 'package:paradise_sri_lanka/Controllers/applicants_controller.dart';
 import 'package:tuple/tuple.dart';
 import '../../Controllers/visa_type_selection_controller.dart';
 import 'Widgets/question_page.dart';
+import 'locations.dart';
+import 'activities.dart';
 
 class VisaTypeSelection extends StatelessWidget {
   VisaTypeSelection({super.key});
@@ -41,7 +43,6 @@ class VisaTypeSelection extends StatelessWidget {
                   useCountryPicker: true,
                   textController: controller.countryIdController,
                 ),
-
                 QuestionPage(
                   title: "What is the primary purpose of your visit?",
                   dropdownItems: controller.purposes
@@ -53,7 +54,6 @@ class VisaTypeSelection extends StatelessWidget {
                   isDropdown: true,
                   textController: controller.purposeController,
                 ),
-
                 QuestionPage(
                   title:
                       "Are you traveling as an individual or as part of a family/group?",
@@ -66,7 +66,6 @@ class VisaTypeSelection extends StatelessWidget {
                   isDropdown: true,
                   textController: controller.travelTypeController,
                 ),
-
                 QuestionPage(
                   title:
                       "Please choose the appropriate visa category for your visit",
@@ -80,10 +79,9 @@ class VisaTypeSelection extends StatelessWidget {
                   isDropdown: true,
                   textController: controller.visaSubCategoryController,
                 ),
-
                 QuestionPage(
                   title: "When do you plan to arrive in Sri Lanka?",
-                  dropdownItems: const [], // Not used, but could be used for some other inputs
+                  dropdownItems: const [],
                   showBack: true,
                   onNext: controller.nextPage,
                   onBack: controller.previousPage,
@@ -91,7 +89,33 @@ class VisaTypeSelection extends StatelessWidget {
                   useDatePicker: true,
                   textController: controller.arrivalDateController,
                 ),
-                // Add more pages as needed
+                QuestionPage(
+                  title:
+                      "Select your favorite activities in Sri Lanka (exactly 3)",
+                  dropdownItems: categories
+                      .map((activity) => Tuple2(activity, activity))
+                      .toList(),
+                  showBack: true,
+                  onNext: controller.nextPage,
+                  onBack: controller.previousPage,
+                  isDropdown: true,
+                  textController: controller.activitiesController,
+                  isMultiSelect: true,
+                  maxSelections: 3,
+                  minSelections: 3,
+                ),
+                QuestionPage(
+                  title: "Select your favorite places in Sri Lanka (up to 5)",
+                  dropdownItems: allLocations
+                      .map((place) => Tuple2(place, place))
+                      .toList(),
+                  showBack: true,
+                  onNext: controller.nextPage,
+                  onBack: controller.previousPage,
+                  isDropdown: true,
+                  textController: controller.placesController,
+                  isMultiSelect: true,
+                ),
               ],
             ),
           ),

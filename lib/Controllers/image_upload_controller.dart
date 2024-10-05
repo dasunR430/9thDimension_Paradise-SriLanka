@@ -119,7 +119,7 @@ class ImageUploadController extends GetxController {
 
   Future<void> _sendImageToServer(
       File imageFile, VisaApplicationController sectionController) async {
-    const url = 'http://13.51.159.48:9000/detect-passport';
+    const url = 'http://16.171.38.112:9000/detect-passport';
 
     try {
       isLoading.value = true;
